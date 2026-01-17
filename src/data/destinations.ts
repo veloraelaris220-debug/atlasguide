@@ -9,6 +9,7 @@ export interface Destination {
   avgTemp: string;
   highlights: string[];
   category: 'beach' | 'city' | 'nature' | 'adventure' | 'cultural' | 'romantic';
+  foods: string[];
 }
 
 export const destinations: Destination[] = [
@@ -24,6 +25,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame', 'Champs-Élysées'],
     category: 'romantic',
+    foods: ['Croissants', 'Escargots', 'Crêpes', 'French Onion Soup', 'Macarons', 'Coq au Vin'],
   },
   {
     id: 'santorini',
@@ -36,6 +38,7 @@ export const destinations: Destination[] = [
     avgTemp: '23°C',
     highlights: ['Oia Sunset', 'Red Beach', 'Ancient Akrotiri', 'Wine Tasting'],
     category: 'romantic',
+    foods: ['Moussaka', 'Fava Santorinis', 'Tomato Keftedes', 'Greek Salad', 'Baklava', 'Gyros'],
   },
   {
     id: 'rome',
@@ -48,6 +51,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Colosseum', 'Vatican City', 'Trevi Fountain', 'Roman Forum'],
     category: 'cultural',
+    foods: ['Carbonara', 'Cacio e Pepe', 'Supplì', 'Gelato', 'Pizza al Taglio', 'Tiramisu'],
   },
   {
     id: 'barcelona',
@@ -60,6 +64,7 @@ export const destinations: Destination[] = [
     avgTemp: '19°C',
     highlights: ['Sagrada Família', 'Park Güell', 'La Rambla', 'Gothic Quarter'],
     category: 'city',
+    foods: ['Paella', 'Tapas', 'Patatas Bravas', 'Jamón Ibérico', 'Churros con Chocolate', 'Crema Catalana'],
   },
   {
     id: 'amsterdam',
@@ -72,6 +77,7 @@ export const destinations: Destination[] = [
     avgTemp: '13°C',
     highlights: ['Anne Frank House', 'Van Gogh Museum', 'Canal Cruise', 'Vondelpark'],
     category: 'city',
+    foods: ['Stroopwafel', 'Bitterballen', 'Herring', 'Poffertjes', 'Cheese', 'Appeltaart'],
   },
   {
     id: 'iceland',
@@ -84,6 +90,7 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Golden Circle', 'Blue Lagoon', 'Northern Lights', 'Glacier Hiking'],
     category: 'adventure',
+    foods: ['Lamb Soup', 'Skyr', 'Pylsur (Hot Dogs)', 'Hákarl', 'Plokkfiskur', 'Rúgbrauð'],
   },
   {
     id: 'london',
@@ -96,6 +103,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Tower of London', 'British Museum', 'Westminster', 'West End Shows'],
     category: 'city',
+    foods: ['Fish and Chips', 'Full English Breakfast', 'Afternoon Tea', 'Bangers and Mash', 'Meat Pies', 'Sunday Roast'],
   },
   {
     id: 'swiss-alps',
@@ -108,6 +116,7 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Matterhorn', 'Jungfrau', 'Lake Geneva', 'Glacier Express'],
     category: 'nature',
+    foods: ['Fondue', 'Raclette', 'Rösti', 'Swiss Chocolate', 'Zürcher Geschnetzeltes', 'Birchermüesli'],
   },
 
   // Asia
@@ -122,6 +131,7 @@ export const destinations: Destination[] = [
     avgTemp: '16°C',
     highlights: ['Shibuya Crossing', 'Senso-ji Temple', 'Mount Fuji', 'Harajuku'],
     category: 'city',
+    foods: ['Sushi', 'Ramen', 'Tempura', 'Wagyu Beef', 'Matcha Desserts', 'Takoyaki'],
   },
   {
     id: 'bali',
@@ -134,6 +144,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Ubud Rice Terraces', 'Tanah Lot', 'Seminyak Beach', 'Mount Batur'],
     category: 'beach',
+    foods: ['Nasi Goreng', 'Babi Guling', 'Satay', 'Lawar', 'Bebek Betutu', 'Pisang Goreng'],
   },
   {
     id: 'kyoto',
@@ -146,6 +157,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Fushimi Inari', 'Kinkaku-ji', 'Arashiyama Bamboo', 'Gion District'],
     category: 'cultural',
+    foods: ['Kaiseki Cuisine', 'Yudofu', 'Matcha Sweets', 'Obanzai', 'Tsukemono', 'Yuba'],
   },
   {
     id: 'maldives',
@@ -158,6 +170,7 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Overwater Villas', 'Snorkeling', 'Bioluminescent Beach', 'Spa Retreats'],
     category: 'beach',
+    foods: ['Garudhiya', 'Mas Huni', 'Fihunu Mas', 'Roshi', 'Hedhikaa', 'Fresh Seafood'],
   },
   {
     id: 'thailand',
@@ -170,6 +183,7 @@ export const destinations: Destination[] = [
     avgTemp: '29°C',
     highlights: ['Grand Palace', 'Wat Pho', 'Chatuchak Market', 'Thai Cuisine'],
     category: 'cultural',
+    foods: ['Pad Thai', 'Tom Yum', 'Green Curry', 'Mango Sticky Rice', 'Som Tam', 'Khao Pad'],
   },
   {
     id: 'vietnam',
@@ -182,6 +196,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Junk Boat Cruise', 'Kayaking', 'Floating Villages', 'Cave Exploration'],
     category: 'nature',
+    foods: ['Pho', 'Banh Mi', 'Spring Rolls', 'Bun Cha', 'Seafood BBQ', 'Che'],
   },
   {
     id: 'singapore',
@@ -194,6 +209,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Gardens by the Bay', 'Marina Bay Sands', 'Hawker Centers', 'Sentosa Island'],
     category: 'city',
+    foods: ['Hainanese Chicken Rice', 'Chilli Crab', 'Laksa', 'Satay', 'Kaya Toast', 'Char Kway Teow'],
   },
 
   // India - All States and Popular Destinations
@@ -209,6 +225,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Tirumala Temple', 'Sri Padmavathi Temple', 'Chandragiri Fort', 'Talakona Waterfalls'],
     category: 'cultural',
+    foods: ['Tirupati Laddu', 'Pulihora', 'Pesarattu', 'Gongura Pachadi', 'Avakaya', 'Andhra Biryani'],
   },
   {
     id: 'visakhapatnam',
@@ -221,6 +238,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Rishikonda Beach', 'Borra Caves', 'Kailasagiri Hill', 'Araku Valley'],
     category: 'beach',
+    foods: ['Bamboo Chicken', 'Gongura Mamsam', 'Vizag Sea Food', 'Punugulu', 'Araku Coffee', 'Royyala Iguru'],
   },
 
   // Arunachal Pradesh
@@ -235,6 +253,7 @@ export const destinations: Destination[] = [
     avgTemp: '10°C',
     highlights: ['Tawang Monastery', 'Sela Pass', 'Madhuri Lake', 'War Memorial'],
     category: 'cultural',
+    foods: ['Thukpa', 'Momos', 'Zan', 'Khura', 'Chura Sabji', 'Butter Tea'],
   },
 
   // Assam
@@ -249,6 +268,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Kamakhya Temple', 'Brahmaputra River Cruise', 'Assam State Zoo', 'Umananda Island'],
     category: 'cultural',
+    foods: ['Assamese Fish Curry', 'Masor Tenga', 'Pitha', 'Duck Meat Curry', 'Khar', 'Assamese Thali'],
   },
   {
     id: 'kaziranga',
@@ -261,6 +281,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Rhino Safari', 'Elephant Ride', 'Bird Watching', 'Tea Gardens'],
     category: 'nature',
+    foods: ['Jolpan', 'Aloo Pitika', 'Xaak Bhaji', 'Pork with Bamboo Shoot', 'Rice Beer', 'Assam Tea'],
   },
 
   // Bihar
@@ -275,6 +296,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Mahabodhi Temple', 'Bodhi Tree', 'Great Buddha Statue', 'Thai Monastery'],
     category: 'cultural',
+    foods: ['Litti Chokha', 'Sattu Paratha', 'Dal Pitha', 'Khaja', 'Thekua', 'Dahi Chura'],
   },
 
   // Chhattisgarh
@@ -289,6 +311,7 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Chitrakote Falls', 'Tirathgarh Falls', 'Kanger Valley', 'Kutumsar Caves'],
     category: 'nature',
+    foods: ['Fara', 'Muthiya', 'Chila', 'Iddhar', 'Angakar Roti', 'Bore Baasi'],
   },
 
   // Goa
@@ -303,6 +326,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Baga Beach', 'Old Goa Churches', 'Dudhsagar Falls', 'Anjuna Flea Market'],
     category: 'beach',
+    foods: ['Fish Curry Rice', 'Vindaloo', 'Bebinca', 'Xacuti', 'Prawn Balchão', 'Feni'],
   },
 
   // Gujarat
@@ -317,6 +341,7 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['White Desert', 'Rann Utsav', 'Kalo Dungar', 'Kutch Museum'],
     category: 'nature',
+    foods: ['Dabeli', 'Dhokla', 'Khandvi', 'Thepla', 'Kutchi Dabeli', 'Undhiyu'],
   },
   {
     id: 'gir',
@@ -329,6 +354,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Asiatic Lions', 'Kamleshwar Dam', 'Crocodile Breeding Centre', 'Safari'],
     category: 'adventure',
+    foods: ['Sev Usal', 'Fafda Jalebi', 'Handvo', 'Gathiya', 'Malpua', 'Khakhra'],
   },
   {
     id: 'somnath',
@@ -341,6 +367,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Somnath Temple', 'Triveni Sangam', 'Bhalka Tirtha', 'Light & Sound Show'],
     category: 'cultural',
+    foods: ['Gujarati Thali', 'Khichdi Kadhi', 'Shrikhand', 'Basundi', 'Mohanthal', 'Ghughra'],
   },
 
   // Haryana
@@ -355,6 +382,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Brahma Sarovar', 'Krishna Museum', 'Jyotisar', 'Bhadrakali Temple'],
     category: 'cultural',
+    foods: ['Bajra Roti', 'Kadhi Pakora', 'Singri ki Sabzi', 'Churma', 'Kheer', 'Bathua Raita'],
   },
 
   // Himachal Pradesh
@@ -369,6 +397,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Mall Road', 'Christ Church', 'Jakhoo Temple', 'Kufri'],
     category: 'nature',
+    foods: ['Siddu', 'Madra', 'Chana Madra', 'Dham', 'Babru', 'Aktori'],
   },
   {
     id: 'manali',
@@ -381,6 +410,7 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Rohtang Pass', 'Solang Valley', 'Hadimba Temple', 'Old Manali'],
     category: 'adventure',
+    foods: ['Trout Fish', 'Tudkiya Bhath', 'Patande', 'Bhey', 'Kullu Trout', 'Mittha'],
   },
   {
     id: 'dharamshala',
@@ -393,6 +423,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['McLeod Ganj', 'Tsuglagkhang Complex', 'Bhagsu Waterfall', 'Triund Trek'],
     category: 'cultural',
+    foods: ['Tibetan Momos', 'Thukpa', 'Thenthuk', 'Tingmo', 'Butter Tea', 'Shabalay'],
   },
   {
     id: 'spiti',
@@ -405,6 +436,7 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Key Monastery', 'Chandratal Lake', 'Kibber Village', 'Pin Valley'],
     category: 'adventure',
+    foods: ['Thukpa', 'Momos', 'Chha Gosir', 'Paba', 'Butter Tea', 'Tsampa'],
   },
 
   // Jharkhand
@@ -419,6 +451,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Hundru Falls', 'Jonha Falls', 'Dassam Falls', 'Rock Garden'],
     category: 'nature',
+    foods: ['Dhuska', 'Pittha', 'Handia Rice Beer', 'Rugra', 'Chilka Roti', 'Litti Chokha'],
   },
 
   // Karnataka
@@ -433,6 +466,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Lalbagh Gardens', 'Cubbon Park', 'Bangalore Palace', 'MG Road'],
     category: 'city',
+    foods: ['Masala Dosa', 'Bisi Bele Bath', 'Ragi Mudde', 'Mangalorean Fish Curry', 'Filter Coffee', 'Obbattu'],
   },
   {
     id: 'mysore',
@@ -445,6 +479,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Mysore Palace', 'Chamundi Hill', 'Brindavan Gardens', 'Mysore Zoo'],
     category: 'cultural',
+    foods: ['Mysore Pak', 'Mysore Masala Dosa', 'Nanjangud Banana', 'Kosambari', 'Chiroti', 'Mysore Rasam'],
   },
   {
     id: 'hampi',
@@ -457,6 +492,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Virupaksha Temple', 'Vittala Temple', 'Stone Chariot', 'Hampi Bazaar'],
     category: 'cultural',
+    foods: ['Obbattu', 'Jolada Rotti', 'Enne Badnekai', 'Nuchinunde', 'Holige', 'Ragi Mudde'],
   },
   {
     id: 'coorg',
@@ -469,6 +505,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Abbey Falls', 'Raja\'s Seat', 'Coffee Plantations', 'Namdroling Monastery'],
     category: 'nature',
+    foods: ['Pandi Curry', 'Kadambuttu', 'Nool Puttu', 'Akki Rotti', 'Coorg Pork', 'Filter Coffee'],
   },
 
   // Kerala
@@ -483,6 +520,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Alleppey Houseboat', 'Kumarakom', 'Vembanad Lake', 'Village Tours'],
     category: 'romantic',
+    foods: ['Kerala Sadya', 'Karimeen Pollichathu', 'Appam with Stew', 'Puttu Kadala', 'Malabar Biryani', 'Payasam'],
   },
   {
     id: 'munnar',
@@ -490,11 +528,12 @@ export const destinations: Destination[] = [
     country: 'India',
     continent: 'Asia',
     image: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=800&q=80',
-    description: 'Lush tea plantations carpeting rolling hills in this South Indian hill station.',
+    description: 'A hill station surrounded by emerald tea estates and misty mountain views.',
     bestTime: 'Sep - May',
-    avgTemp: '16°C',
+    avgTemp: '18°C',
     highlights: ['Tea Gardens', 'Eravikulam National Park', 'Mattupetty Dam', 'Top Station'],
     category: 'nature',
+    foods: ['Kerala Parotta', 'Fish Molee', 'Beef Fry', 'Kappa with Fish Curry', 'Ela Ada', 'Pazham Pori'],
   },
   {
     id: 'kovalam',
@@ -507,6 +546,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Lighthouse Beach', 'Ayurveda Spa', 'Hawa Beach', 'Vizhinjam Mosque'],
     category: 'beach',
+    foods: ['Prawn Curry', 'Meen Pollichathu', 'Coconut Fish Curry', 'Thalassery Biryani', 'Unniyappam', 'Kozhikode Halwa'],
   },
   {
     id: 'thekkady',
@@ -519,6 +559,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Periyar Tiger Reserve', 'Spice Gardens', 'Bamboo Rafting', 'Elephant Camp'],
     category: 'adventure',
+    foods: ['Kerala Fish Curry', 'Erachi Varutharacha', 'Spice Tea', 'Tapioca with Fish', 'Banana Chips', 'Cardamom Tea'],
   },
 
   // Madhya Pradesh
@@ -533,6 +574,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Kandariya Mahadeva Temple', 'Lakshmana Temple', 'Light & Sound Show', 'Panna National Park'],
     category: 'cultural',
+    foods: ['Poha', 'Dal Bafla', 'Bhutte ki Kees', 'Malpua', 'Mawa Bati', 'Sabudana Khichdi'],
   },
   {
     id: 'bandhavgarh',
@@ -545,6 +587,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Tiger Safari', 'Bandhavgarh Fort', 'Ancient Caves', 'Bird Watching'],
     category: 'adventure',
+    foods: ['Bihari Kabab', 'Seekh Kabab', 'Rogan Josh', 'Poha Jalebi', 'Chakki ki Shak', 'Khopra Pak'],
   },
   {
     id: 'orchha',
@@ -557,6 +600,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Orchha Fort', 'Raja Mahal', 'Chaturbhuj Temple', 'Royal Cenotaphs'],
     category: 'cultural',
+    foods: ['Bundelkhandi Cuisine', 'Raita', 'Daal Bafla', 'Khurma', 'Chakki Shaak', 'Lavang Lata'],
   },
 
   // Maharashtra
@@ -571,6 +615,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Gateway of India', 'Marine Drive', 'Elephanta Caves', 'Bollywood Tours'],
     category: 'city',
+    foods: ['Vada Pav', 'Pav Bhaji', 'Bombay Sandwich', 'Bhel Puri', 'Misal Pav', 'Bombil Fry'],
   },
   {
     id: 'ajanta-ellora',
@@ -583,6 +628,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Ajanta Caves', 'Ellora Caves', 'Kailasa Temple', 'Ancient Paintings'],
     category: 'cultural',
+    foods: ['Puran Poli', 'Shrikhand', 'Bharli Vangi', 'Thalipeeth', 'Sabudana Vada', 'Modak'],
   },
   {
     id: 'lonavala',
@@ -595,6 +641,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Tiger Point', 'Bhushi Dam', 'Karla Caves', 'Lohagad Fort'],
     category: 'nature',
+    foods: ['Chikki', 'Fudge', 'Vada Pav', 'Corn on Cob', 'Kanda Bhaji', 'Chai'],
   },
 
   // Manipur
@@ -609,6 +656,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Loktak Lake', 'Ima Keithel', 'Kangla Fort', 'War Cemetery'],
     category: 'cultural',
+    foods: ['Eromba', 'Singju', 'Chamthong', 'Kangsoi', 'Chak-hao Kheer', 'Paknam'],
   },
 
   // Meghalaya
@@ -623,6 +671,7 @@ export const destinations: Destination[] = [
     avgTemp: '17°C',
     highlights: ['Elephant Falls', 'Shillong Peak', 'Don Bosco Museum', 'Ward\'s Lake'],
     category: 'nature',
+    foods: ['Jadoh', 'Doh Khlieh', 'Tungrymbai', 'Ki Kpu', 'Pukhlein', 'Rice Beer'],
   },
   {
     id: 'cherrapunji',
@@ -635,6 +684,7 @@ export const destinations: Destination[] = [
     avgTemp: '16°C',
     highlights: ['Living Root Bridges', 'Nohkalikai Falls', 'Mawsmai Caves', 'Seven Sisters Falls'],
     category: 'adventure',
+    foods: ['Doh Neiiong', 'Nakham Bitchi', 'Minil Songa', 'Dohjem', 'Pumaloi', 'Black Sesame'],
   },
 
   // Mizoram
@@ -649,6 +699,7 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['Durtlang Hills', 'Solomon Temple', 'Mizoram State Museum', 'Reiek'],
     category: 'cultural',
+    foods: ['Bai', 'Vawksa Rep', 'Misa Mach Poora', 'Koat Pitha', 'Sawhchiar', 'Chhangban'],
   },
 
   // Nagaland
@@ -663,6 +714,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Hornbill Festival', 'War Cemetery', 'Dzukou Valley', 'State Museum'],
     category: 'cultural',
+    foods: ['Smoked Pork', 'Axone', 'Bamboo Shoot Curry', 'Galho', 'Zutho', 'Naga Chutney'],
   },
 
   // Odisha
@@ -677,6 +729,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Jagannath Temple', 'Puri Beach', 'Rath Yatra', 'Chilika Lake'],
     category: 'cultural',
+    foods: ['Dalma', 'Chenna Poda', 'Rasagola', 'Pakhala Bhata', 'Machha Besara', 'Chhena Jhili'],
   },
   {
     id: 'konark',
@@ -689,6 +742,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Sun Temple', 'Konark Beach', 'Chandrabhaga Beach', 'ASI Museum'],
     category: 'cultural',
+    foods: ['Machi Jhola', 'Besara', 'Santula', 'Enduri Pitha', 'Kakara Pitha', 'Khaja'],
   },
 
   // Punjab
@@ -703,6 +757,7 @@ export const destinations: Destination[] = [
     avgTemp: '23°C',
     highlights: ['Golden Temple', 'Wagah Border', 'Jallianwala Bagh', 'Partition Museum'],
     category: 'cultural',
+    foods: ['Langar', 'Amritsari Kulcha', 'Butter Chicken', 'Lassi', 'Sarson Ka Saag', 'Makki di Roti'],
   },
 
   // Rajasthan
@@ -717,6 +772,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Amber Fort', 'Hawa Mahal', 'City Palace', 'Jantar Mantar'],
     category: 'cultural',
+    foods: ['Dal Baati Churma', 'Ghevar', 'Pyaaz Kachori', 'Laal Maas', 'Mawa Kachori', 'Rajasthani Thali'],
   },
   {
     id: 'udaipur',
@@ -729,6 +785,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Lake Pichola', 'City Palace', 'Jag Mandir', 'Monsoon Palace'],
     category: 'romantic',
+    foods: ['Daal Baati', 'Gatte ki Sabzi', 'Kachori', 'Malpua', 'Shahi Paneer', 'Kulfi'],
   },
   {
     id: 'jodhpur',
@@ -741,6 +798,7 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Mehrangarh Fort', 'Jaswant Thada', 'Clock Tower Market', 'Umaid Bhawan Palace'],
     category: 'cultural',
+    foods: ['Mirchi Bada', 'Makhaniya Lassi', 'Pyaaz ki Kachori', 'Daal Baati Churma', 'Mohan Thaal', 'Ker Sangri'],
   },
   {
     id: 'jaisalmer',
@@ -753,6 +811,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Jaisalmer Fort', 'Sam Sand Dunes', 'Patwon Ki Haveli', 'Desert Safari'],
     category: 'adventure',
+    foods: ['Ker Sangri', 'Gatte ki Sabzi', 'Bajre ki Roti', 'Murg-e-Subz', 'Kair', 'Bhuna Kukda'],
   },
   {
     id: 'pushkar',
@@ -765,6 +824,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Brahma Temple', 'Pushkar Lake', 'Camel Fair', 'Savitri Temple'],
     category: 'cultural',
+    foods: ['Malpua', 'Poha', 'Dal Pakwan', 'Rajasthani Thali', 'Bhuna Murg', 'Churma'],
   },
 
   // Sikkim
@@ -779,6 +839,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Tsomgo Lake', 'Nathula Pass', 'Rumtek Monastery', 'MG Marg'],
     category: 'nature',
+    foods: ['Momos', 'Thukpa', 'Gundruk', 'Phagshapa', 'Sel Roti', 'Chhurpi'],
   },
   {
     id: 'pelling',
@@ -791,6 +852,7 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Kanchenjunga View', 'Pemayangtse Monastery', 'Rabdentse Ruins', 'Khecheopalri Lake'],
     category: 'nature',
+    foods: ['Sikkimese Thali', 'Kinema Curry', 'Dhindo', 'Chhurpi Soup', 'Tongba', 'Nettle Soup'],
   },
 
   // Tamil Nadu
@@ -805,6 +867,7 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Marina Beach', 'Kapaleeshwarar Temple', 'Fort St. George', 'DakshinaChitra'],
     category: 'city',
+    foods: ['Idli Sambar', 'Dosa', 'Chettinad Chicken', 'Filter Coffee', 'Pongal', 'Kothu Parotta'],
   },
   {
     id: 'mahabalipuram',
@@ -817,6 +880,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Shore Temple', 'Pancha Rathas', 'Arjuna\'s Penance', 'Krishna\'s Butter Ball'],
     category: 'cultural',
+    foods: ['Fresh Seafood', 'Prawn Curry', 'Fish Fry', 'Appam', 'Crab Masala', 'Coconut Chutney'],
   },
   {
     id: 'madurai',
@@ -829,6 +893,7 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Meenakshi Temple', 'Thirumalai Nayak Palace', 'Gandhi Museum', 'Banana Market'],
     category: 'cultural',
+    foods: ['Jigarthanda', 'Kari Dosai', 'Paruthi Paal', 'Madurai Mutton', 'Idiyappam', 'Paniyaram'],
   },
   {
     id: 'ooty',
@@ -841,6 +906,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Nilgiri Mountain Railway', 'Botanical Gardens', 'Ooty Lake', 'Doddabetta Peak'],
     category: 'nature',
+    foods: ['Homemade Chocolates', 'Varkey', 'Ooty Cheese', 'Lemon Eucalyptus Tea', 'Mushroom Curry', 'Toda Honey'],
   },
   {
     id: 'pondicherry',
@@ -853,6 +919,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['French Quarter', 'Auroville', 'Paradise Beach', 'Sri Aurobindo Ashram'],
     category: 'romantic',
+    foods: ['French Pastries', 'Crepes', 'Pondy Fish Curry', 'Croissants', 'Baguettes', 'Cafe Au Lait'],
   },
 
   // Telangana
@@ -867,6 +934,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Charminar', 'Golconda Fort', 'Hussain Sagar', 'Ramoji Film City'],
     category: 'city',
+    foods: ['Hyderabadi Biryani', 'Haleem', 'Double Ka Meetha', 'Mirchi Ka Salan', 'Irani Chai', 'Qubani Ka Meetha'],
   },
 
   // Tripura
@@ -881,6 +949,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Ujjayanta Palace', 'Neermahal', 'Tripura Sundari Temple', 'Jampui Hills'],
     category: 'cultural',
+    foods: ['Mui Borok', 'Chakhwi', 'Wahan Mosdeng', 'Bhangui', 'Bamboo Shoot Curry', 'Pitha'],
   },
 
   // Uttar Pradesh
@@ -895,6 +964,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Ganga Aarti', 'Dashashwamedh Ghat', 'Kashi Vishwanath Temple', 'Sarnath'],
     category: 'cultural',
+    foods: ['Banarasi Paan', 'Kachori Sabzi', 'Thandai', 'Chaat', 'Malaiyo', 'Banarasi Lassi'],
   },
   {
     id: 'agra',
@@ -907,6 +977,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Taj Mahal', 'Agra Fort', 'Fatehpur Sikri', 'Mehtab Bagh'],
     category: 'romantic',
+    foods: ['Petha', 'Bedai', 'Mughlai Cuisine', 'Dalmoth', 'Jalebi', 'Paratha'],
   },
   {
     id: 'lucknow',
@@ -919,6 +990,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Bara Imambara', 'Rumi Darwaza', 'Chota Imambara', 'Hazratganj'],
     category: 'cultural',
+    foods: ['Tunday Kababi', 'Lucknowi Biryani', 'Galawati Kebab', 'Sheermal', 'Kulcha Nahari', 'Malai Makhan'],
   },
 
   // Uttarakhand
@@ -933,6 +1005,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Laxman Jhula', 'River Rafting', 'Yoga Ashrams', 'Ganga Aarti'],
     category: 'adventure',
+    foods: ['Aloo ke Gutke', 'Kafuli', 'Phaanu', 'Bhang ki Chutney', 'Singori', 'Bal Mithai'],
   },
   {
     id: 'nainital',
@@ -945,6 +1018,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Naini Lake', 'Naina Devi Temple', 'Snow View Point', 'Mall Road'],
     category: 'nature',
+    foods: ['Bhatt ki Churkani', 'Chainsoo', 'Dubuk', 'Baadi', 'Jhangora Kheer', 'Kumaoni Raita'],
   },
   {
     id: 'mussoorie',
@@ -957,6 +1031,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Kempty Falls', 'Gun Hill', 'Camel\'s Back Road', 'Lal Tibba'],
     category: 'nature',
+    foods: ['Maggi at Mall Road', 'Tibetan Food', 'Garhwali Cuisine', 'Momos', 'Hot Chocolate', 'Pakoras'],
   },
   {
     id: 'haridwar',
@@ -969,6 +1044,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Har Ki Pauri', 'Ganga Aarti', 'Mansa Devi Temple', 'Chandi Devi Temple'],
     category: 'cultural',
+    foods: ['Chole Bhature', 'Aloo Puri', 'Kachori', 'Lassi', 'Peda', 'Rabri'],
   },
   {
     id: 'auli',
@@ -981,6 +1057,7 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Skiing', 'Gondola Ride', 'Nanda Devi View', 'Artificial Lake'],
     category: 'adventure',
+    foods: ['Kafuli', 'Mandua ki Roti', 'Chainsoo', 'Gahat Dal', 'Arsa', 'Gulgula'],
   },
 
   // West Bengal
@@ -990,11 +1067,12 @@ export const destinations: Destination[] = [
     country: 'India',
     continent: 'Asia',
     image: 'https://images.unsplash.com/photo-1558431382-27e303142255?w=800&q=80',
-    description: 'The City of Joy with colonial heritage, literature, art, and delicious Bengali cuisine.',
+    description: 'The City of Joy with colonial grandeur, artistic heritage, and legendary sweets.',
     bestTime: 'Oct - Mar',
     avgTemp: '27°C',
-    highlights: ['Victoria Memorial', 'Howrah Bridge', 'Indian Museum', 'Dakshineswar Temple'],
+    highlights: ['Victoria Memorial', 'Howrah Bridge', 'Durga Puja', 'Park Street'],
     category: 'city',
+    foods: ['Rosogolla', 'Mishti Doi', 'Kathi Roll', 'Fish Curry', 'Puchka', 'Sandesh'],
   },
   {
     id: 'darjeeling',
@@ -1007,6 +1085,7 @@ export const destinations: Destination[] = [
     avgTemp: '13°C',
     highlights: ['Tiger Hill Sunrise', 'Toy Train', 'Tea Gardens', 'Batasia Loop'],
     category: 'nature',
+    foods: ['Darjeeling Tea', 'Momos', 'Thukpa', 'Churpi', 'Sel Roti', 'Aloo Dum'],
   },
   {
     id: 'sundarbans',
@@ -1019,6 +1098,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Tiger Safari', 'Mangrove Forest', 'Bird Watching', 'Boat Cruise'],
     category: 'adventure',
+    foods: ['Chingri Malai Curry', 'Ilish Bhapa', 'Macher Jhol', 'Doi Maach', 'Patishapta', 'Pithe'],
   },
 
   // Union Territories
@@ -1034,6 +1114,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Havelock Island', 'Radhanagar Beach', 'Cellular Jail', 'Scuba Diving'],
     category: 'beach',
+    foods: ['Fresh Seafood', 'Fish Curry', 'Lobster', 'Coconut Prawn Curry', 'Grilled Fish', 'Amritsari Kulcha'],
   },
 
   // Chandigarh
@@ -1048,6 +1129,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Rock Garden', 'Sukhna Lake', 'Capitol Complex', 'Rose Garden'],
     category: 'city',
+    foods: ['Chole Bhature', 'Butter Chicken', 'Amritsari Fish', 'Lassi', 'Paneer Tikka', 'Sarson da Saag'],
   },
 
   // Dadra and Nagar Haveli & Daman and Diu
@@ -1062,6 +1144,7 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Diu Fort', 'Nagoa Beach', 'St. Paul\'s Church', 'Gangeshwar Temple'],
     category: 'beach',
+    foods: ['Feni', 'Prawn Curry', 'Fish Recheado', 'Bebinca', 'Patra ni Macchi', 'Dhansak'],
   },
 
   // Delhi
@@ -1076,6 +1159,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Red Fort', 'Qutub Minar', 'India Gate', 'Humayun\'s Tomb'],
     category: 'city',
+    foods: ['Chole Bhature', 'Paranthe', 'Butter Chicken', 'Chaat', 'Kebabs', 'Dilli ki Jalebi'],
   },
 
   // Jammu & Kashmir
@@ -1090,6 +1174,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Dal Lake', 'Shikara Ride', 'Mughal Gardens', 'Shankaracharya Temple'],
     category: 'romantic',
+    foods: ['Wazwan', 'Rogan Josh', 'Gustaba', 'Yakhni', 'Kashmiri Pulao', 'Kahwa'],
   },
   {
     id: 'gulmarg',
@@ -1102,6 +1187,7 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Gondola Ride', 'Skiing', 'Golf Course', 'Alpather Lake'],
     category: 'adventure',
+    foods: ['Kashmiri Wazwan', 'Harissa', 'Modur Pulao', 'Sheer Chai', 'Rista', 'Tabak Maaz'],
   },
   {
     id: 'pahalgam',
@@ -1114,6 +1200,7 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Betaab Valley', 'Aru Valley', 'Lidder River', 'Chandanwari'],
     category: 'nature',
+    foods: ['Kashmiri Dum Aloo', 'Nadroo Yakhni', 'Haak Saag', 'Tchok', 'Sheekh Tujj', 'Noon Chai'],
   },
 
   // Ladakh
@@ -1128,6 +1215,7 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Pangong Lake', 'Nubra Valley', 'Khardung La', 'Thiksey Monastery'],
     category: 'adventure',
+    foods: ['Thukpa', 'Momos', 'Skyu', 'Chhutagi', 'Butter Tea', 'Apricot Jam'],
   },
 
   // Lakshadweep
@@ -1142,6 +1230,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Agatti Island', 'Bangaram Island', 'Snorkeling', 'Kayaking'],
     category: 'beach',
+    foods: ['Fish Curry', 'Coconut Dishes', 'Tuna Fry', 'Octopus Fry', 'Appam', 'Coconut Water'],
   },
 
   // Africa
@@ -1156,6 +1245,7 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['Jemaa el-Fnaa', 'Majorelle Garden', 'Medina Souks', 'Atlas Mountains'],
     category: 'cultural',
+    foods: ['Tagine', 'Couscous', 'Pastilla', 'Mint Tea', 'Harira', 'Msemen'],
   },
   {
     id: 'safari',
@@ -1168,6 +1258,7 @@ export const destinations: Destination[] = [
     avgTemp: '21°C',
     highlights: ['Great Migration', 'Big Five Safari', 'Balloon Safari', 'Maasai Culture'],
     category: 'adventure',
+    foods: ['Nyama Choma', 'Ugali', 'Chapati', 'Mishkaki', 'Pilau', 'Mandazi'],
   },
   {
     id: 'cape-town',
@@ -1180,6 +1271,7 @@ export const destinations: Destination[] = [
     avgTemp: '21°C',
     highlights: ['Table Mountain', 'Cape of Good Hope', 'Robben Island', 'Wine Country'],
     category: 'nature',
+    foods: ['Bobotie', 'Braai', 'Biltong', 'Bunny Chow', 'Koeksisters', 'Malva Pudding'],
   },
   {
     id: 'egypt',
@@ -1192,6 +1284,7 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Pyramids of Giza', 'Sphinx', 'Egyptian Museum', 'Nile Cruise'],
     category: 'cultural',
+    foods: ['Koshari', 'Ful Medames', 'Falafel', 'Shawarma', 'Molokhia', 'Basbousa'],
   },
 
   // Americas
@@ -1206,6 +1299,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Statue of Liberty', 'Central Park', 'Times Square', 'Broadway'],
     category: 'city',
+    foods: ['New York Pizza', 'Bagels with Lox', 'Hot Dogs', 'Cheesecake', 'Pastrami Sandwich', 'Cronuts'],
   },
   {
     id: 'machu-picchu',
@@ -1218,6 +1312,7 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Inca Trail', 'Sun Gate', 'Huayna Picchu', 'Sacred Valley'],
     category: 'adventure',
+    foods: ['Ceviche', 'Lomo Saltado', 'Cuy', 'Anticuchos', 'Pisco Sour', 'Aji de Gallina'],
   },
   {
     id: 'rio',
@@ -1230,6 +1325,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Christ the Redeemer', 'Copacabana Beach', 'Sugarloaf Mountain', 'Carnival'],
     category: 'beach',
+    foods: ['Feijoada', 'Pão de Queijo', 'Açaí Bowl', 'Coxinha', 'Churrasco', 'Caipirinha'],
   },
   {
     id: 'costa-rica',
@@ -1242,6 +1338,7 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Arenal Volcano', 'Cloud Forest', 'Wildlife Spotting', 'Zip-lining'],
     category: 'adventure',
+    foods: ['Gallo Pinto', 'Casado', 'Ceviche', 'Chifrijo', 'Tres Leches', 'Patacones'],
   },
   {
     id: 'cancun',
@@ -1254,6 +1351,7 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Chichen Itza', 'Cenotes', 'Isla Mujeres', 'Tulum Ruins'],
     category: 'beach',
+    foods: ['Tacos al Pastor', 'Cochinita Pibil', 'Ceviche', 'Marquesitas', 'Salbutes', 'Papadzules'],
   },
   {
     id: 'hawaii',
@@ -1266,6 +1364,7 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Waikiki Beach', 'Volcanoes National Park', 'Na Pali Coast', 'Luau'],
     category: 'beach',
+    foods: ['Poke', 'Laulau', 'Kalua Pig', 'Shave Ice', 'Spam Musubi', 'Haupia'],
   },
   {
     id: 'grand-canyon',
@@ -1278,6 +1377,7 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['South Rim', 'Hiking Trails', 'Sunrise/Sunset Views', 'River Rafting'],
     category: 'nature',
+    foods: ['Navajo Tacos', 'BBQ Ribs', 'Arizona Cheese Crisp', 'Sonoran Hot Dog', 'Prickly Pear Cactus', 'Fry Bread'],
   },
 
   // Oceania
@@ -1292,6 +1392,7 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Sydney Opera House', 'Harbour Bridge', 'Bondi Beach', 'The Rocks'],
     category: 'city',
+    foods: ['Meat Pie', 'Barramundi', 'Lamingtons', 'Vegemite Toast', 'Pavlova', 'Tim Tams'],
   },
   {
     id: 'queenstown',
@@ -1304,6 +1405,7 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Bungee Jumping', 'Milford Sound', 'Skiing', 'Wine Tours'],
     category: 'adventure',
+    foods: ['Fergburger', 'Lamb Shank', 'Green-lipped Mussels', 'Hangi', 'Hokey Pokey Ice Cream', 'Meat Pie'],
   },
   {
     id: 'great-barrier',
@@ -1316,6 +1418,7 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Snorkeling', 'Scuba Diving', 'Whitsunday Islands', 'Marine Life'],
     category: 'nature',
+    foods: ['Fresh Seafood', 'Mud Crab', 'Barramundi', 'Prawns', 'Oysters', 'Fish and Chips'],
   },
   {
     id: 'fiji',
@@ -1328,6 +1431,7 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Island Hopping', 'Snorkeling', 'Traditional Kava', 'Beach Resorts'],
     category: 'beach',
+    foods: ['Kokoda', 'Lovo', 'Rourou', 'Cassava', 'Kava', 'Coconut Cream Fish'],
   },
 ];
 
