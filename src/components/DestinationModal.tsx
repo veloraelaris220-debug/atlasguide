@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Calendar, Thermometer, Star, Clock, Camera, ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
+import { X, MapPin, Calendar, Thermometer, Star, Clock, Camera, ChevronLeft, ChevronRight, Plus, Check, UtensilsCrossed } from 'lucide-react';
 import { Destination } from '@/data/destinations';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -228,6 +228,30 @@ export function DestinationModal({ destination, isOpen, onClose, isSelected, onS
               ))}
             </div>
           </div>
+
+          {/* Best Foods to Try */}
+          {destination.foods && destination.foods.length > 0 && (
+            <div className="mb-8">
+              <h3 className="font-display text-xl font-semibold mb-4 flex items-center gap-2">
+                <UtensilsCrossed className="w-5 h-5 text-sunset" />
+                Best Foods to Try
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {destination.foods.map((food, index) => (
+                  <motion.div
+                    key={food}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-sunset-light/50 to-transparent border border-sunset/10"
+                  >
+                    <span className="text-lg">🍽️</span>
+                    <span className="text-sm font-medium">{food}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Travel Tips */}
           <div className="mb-8">
