@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Thermometer, Plus, Check } from 'lucide-react';
+import { MapPin, Calendar, Thermometer, Plus, Check, Eye } from 'lucide-react';
 import { Destination } from '@/data/destinations';
 import { cn } from '@/lib/utils';
 
@@ -7,6 +7,7 @@ interface DestinationCardProps {
   destination: Destination;
   isSelected: boolean;
   onSelect: (destination: Destination) => void;
+  onViewDetails: (destination: Destination) => void;
   index: number;
 }
 
@@ -19,7 +20,7 @@ const categoryColors: Record<string, string> = {
   romantic: 'bg-pink-100 text-pink-600',
 };
 
-export function DestinationCard({ destination, isSelected, onSelect, index }: DestinationCardProps) {
+export function DestinationCard({ destination, isSelected, onSelect, onViewDetails, index }: DestinationCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -29,7 +30,7 @@ export function DestinationCard({ destination, isSelected, onSelect, index }: De
         "group relative overflow-hidden rounded-2xl bg-card cursor-pointer transition-all duration-300",
         isSelected ? "ring-2 ring-primary shadow-card-hover" : "shadow-soft hover:shadow-elevated"
       )}
-      onClick={() => onSelect(destination)}
+      onClick={() => onViewDetails(destination)}
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
@@ -63,6 +64,14 @@ export function DestinationCard({ destination, isSelected, onSelect, index }: De
         >
           {isSelected ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
         </button>
+
+        {/* View Details Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 text-foreground font-medium text-sm shadow-lg">
+            <Eye className="w-4 h-4" />
+            View Details
+          </div>
+        </div>
 
         {/* Location overlay */}
         <div className="absolute bottom-3 left-3 right-3">

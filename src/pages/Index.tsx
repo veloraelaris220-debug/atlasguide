@@ -5,6 +5,7 @@ import { Hero } from '@/components/Hero';
 import { DestinationCard } from '@/components/DestinationCard';
 import { DestinationFilters } from '@/components/DestinationFilters';
 import { ItineraryCalendar } from '@/components/ItineraryCalendar';
+import { DestinationModal } from '@/components/DestinationModal';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
   const [selectedContinent, setSelectedContinent] = useState<Continent>('All');
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([]);
+  const [viewingDestination, setViewingDestination] = useState<Destination | null>(null);
 
   const filteredDestinations = useMemo(() => {
     return destinations.filter((dest) => {
@@ -42,6 +44,14 @@ const Index = () => {
 
   const handleRemoveDestination = (id: string) => {
     setSelectedDestinations((prev) => prev.filter((d) => d.id !== id));
+  };
+
+  const handleViewDetails = (destination: Destination) => {
+    setViewingDestination(destination);
+  };
+
+  const handleCloseModal = () => {
+    setViewingDestination(null);
   };
 
   return (
@@ -85,6 +95,7 @@ const Index = () => {
                 destination={destination}
                 isSelected={selectedDestinations.some((d) => d.id === destination.id)}
                 onSelect={handleSelectDestination}
+                onViewDetails={handleViewDetails}
                 index={index}
               />
             ))}
@@ -135,6 +146,15 @@ const Index = () => {
           />
         </section>
       </main>
+
+      {/* Destination Detail Modal */}
+      <DestinationModal
+        destination={viewingDestination}
+        isOpen={!!viewingDestination}
+        onClose={handleCloseModal}
+        isSelected={viewingDestination ? selectedDestinations.some((d) => d.id === viewingDestination.id) : false}
+        onSelect={handleSelectDestination}
+      />
 
       {/* Footer */}
       <footer className="border-t border-border py-8">
