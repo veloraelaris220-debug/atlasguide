@@ -1,3 +1,15 @@
+export interface FoodItem {
+  name: string;
+  image: string;
+}
+
+export interface BookingLinks {
+  train?: string;
+  hotel: string;
+  bus?: string;
+  flight: string;
+}
+
 export interface Destination {
   id: string;
   name: string;
@@ -9,8 +21,22 @@ export interface Destination {
   avgTemp: string;
   highlights: string[];
   category: 'beach' | 'city' | 'nature' | 'adventure' | 'cultural' | 'romantic';
-  foods: string[];
+  foods: FoodItem[];
+  bookingLinks: BookingLinks;
 }
+
+// Helper function to generate booking links
+const generateBookingLinks = (destination: string, country: string): BookingLinks => {
+  const encodedDest = encodeURIComponent(destination);
+  const isIndia = country === 'India';
+  
+  return {
+    train: isIndia ? `https://www.irctc.co.in/nget/train-search?destination=${encodedDest}` : undefined,
+    hotel: `https://www.booking.com/searchresults.html?ss=${encodedDest}`,
+    bus: isIndia ? `https://www.redbus.in/search?dst=${encodedDest}` : `https://www.busbud.com/search?dst=${encodedDest}`,
+    flight: `https://www.skyscanner.com/transport/flights/anywhere/${encodedDest.toLowerCase().replace(/\s+/g, '-')}/`,
+  };
+};
 
 export const destinations: Destination[] = [
   // Europe
@@ -25,7 +51,15 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame', 'Champs-Élysées'],
     category: 'romantic',
-    foods: ['Croissants', 'Escargots', 'Crêpes', 'French Onion Soup', 'Macarons', 'Coq au Vin'],
+    foods: [
+      { name: 'Croissants', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+      { name: 'Escargots', image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&q=80' },
+      { name: 'Crêpes', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80' },
+      { name: 'French Onion Soup', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Macarons', image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=400&q=80' },
+      { name: 'Coq au Vin', image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Paris', 'France'),
   },
   {
     id: 'santorini',
@@ -38,7 +72,15 @@ export const destinations: Destination[] = [
     avgTemp: '23°C',
     highlights: ['Oia Sunset', 'Red Beach', 'Ancient Akrotiri', 'Wine Tasting'],
     category: 'romantic',
-    foods: ['Moussaka', 'Fava Santorinis', 'Tomato Keftedes', 'Greek Salad', 'Baklava', 'Gyros'],
+    foods: [
+      { name: 'Moussaka', image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&q=80' },
+      { name: 'Fava Santorinis', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Tomato Keftedes', image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&q=80' },
+      { name: 'Greek Salad', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80' },
+      { name: 'Baklava', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80' },
+      { name: 'Gyros', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Santorini', 'Greece'),
   },
   {
     id: 'rome',
@@ -51,7 +93,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Colosseum', 'Vatican City', 'Trevi Fountain', 'Roman Forum'],
     category: 'cultural',
-    foods: ['Carbonara', 'Cacio e Pepe', 'Supplì', 'Gelato', 'Pizza al Taglio', 'Tiramisu'],
+    foods: [
+      { name: 'Carbonara', image: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400&q=80' },
+      { name: 'Cacio e Pepe', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80' },
+      { name: 'Supplì', image: 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?w=400&q=80' },
+      { name: 'Gelato', image: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&q=80' },
+      { name: 'Pizza al Taglio', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Tiramisu', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Rome', 'Italy'),
   },
   {
     id: 'barcelona',
@@ -64,7 +114,15 @@ export const destinations: Destination[] = [
     avgTemp: '19°C',
     highlights: ['Sagrada Família', 'Park Güell', 'La Rambla', 'Gothic Quarter'],
     category: 'city',
-    foods: ['Paella', 'Tapas', 'Patatas Bravas', 'Jamón Ibérico', 'Churros con Chocolate', 'Crema Catalana'],
+    foods: [
+      { name: 'Paella', image: 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=400&q=80' },
+      { name: 'Tapas', image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b?w=400&q=80' },
+      { name: 'Patatas Bravas', image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&q=80' },
+      { name: 'Jamón Ibérico', image: 'https://images.unsplash.com/photo-1600891964599-f94d24d1c653?w=400&q=80' },
+      { name: 'Churros con Chocolate', image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&q=80' },
+      { name: 'Crema Catalana', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Barcelona', 'Spain'),
   },
   {
     id: 'amsterdam',
@@ -77,7 +135,15 @@ export const destinations: Destination[] = [
     avgTemp: '13°C',
     highlights: ['Anne Frank House', 'Van Gogh Museum', 'Canal Cruise', 'Vondelpark'],
     category: 'city',
-    foods: ['Stroopwafel', 'Bitterballen', 'Herring', 'Poffertjes', 'Cheese', 'Appeltaart'],
+    foods: [
+      { name: 'Stroopwafel', image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80' },
+      { name: 'Bitterballen', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Herring', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Poffertjes', image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80' },
+      { name: 'Dutch Cheese', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&q=80' },
+      { name: 'Appeltaart', image: 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Amsterdam', 'Netherlands'),
   },
   {
     id: 'iceland',
@@ -90,7 +156,15 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Golden Circle', 'Blue Lagoon', 'Northern Lights', 'Glacier Hiking'],
     category: 'adventure',
-    foods: ['Lamb Soup', 'Skyr', 'Pylsur (Hot Dogs)', 'Hákarl', 'Plokkfiskur', 'Rúgbrauð'],
+    foods: [
+      { name: 'Lamb Soup', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Skyr', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Pylsur (Hot Dogs)', image: 'https://images.unsplash.com/photo-1612392062126-4a7db33c2c2e?w=400&q=80' },
+      { name: 'Hákarl', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Plokkfiskur', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Rúgbrauð', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Reykjavik', 'Iceland'),
   },
   {
     id: 'london',
@@ -103,7 +177,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Tower of London', 'British Museum', 'Westminster', 'West End Shows'],
     category: 'city',
-    foods: ['Fish and Chips', 'Full English Breakfast', 'Afternoon Tea', 'Bangers and Mash', 'Meat Pies', 'Sunday Roast'],
+    foods: [
+      { name: 'Fish and Chips', image: 'https://images.unsplash.com/photo-1579208030886-b937da0925dc?w=400&q=80' },
+      { name: 'Full English Breakfast', image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&q=80' },
+      { name: 'Afternoon Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Bangers and Mash', image: 'https://images.unsplash.com/photo-1600891964599-f94d24d1c653?w=400&q=80' },
+      { name: 'Meat Pies', image: 'https://images.unsplash.com/photo-1609519479882-a5d3b7c3e9c0?w=400&q=80' },
+      { name: 'Sunday Roast', image: 'https://images.unsplash.com/photo-1606755456206-b25206cde27e?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('London', 'United Kingdom'),
   },
   {
     id: 'swiss-alps',
@@ -116,7 +198,15 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Matterhorn', 'Jungfrau', 'Lake Geneva', 'Glacier Express'],
     category: 'nature',
-    foods: ['Fondue', 'Raclette', 'Rösti', 'Swiss Chocolate', 'Zürcher Geschnetzeltes', 'Birchermüesli'],
+    foods: [
+      { name: 'Fondue', image: 'https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=400&q=80' },
+      { name: 'Raclette', image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&q=80' },
+      { name: 'Rösti', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
+      { name: 'Swiss Chocolate', image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80' },
+      { name: 'Zürcher Geschnetzeltes', image: 'https://images.unsplash.com/photo-1600891964599-f94d24d1c653?w=400&q=80' },
+      { name: 'Birchermüesli', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Swiss Alps', 'Switzerland'),
   },
 
   // Asia
@@ -131,7 +221,15 @@ export const destinations: Destination[] = [
     avgTemp: '16°C',
     highlights: ['Shibuya Crossing', 'Senso-ji Temple', 'Mount Fuji', 'Harajuku'],
     category: 'city',
-    foods: ['Sushi', 'Ramen', 'Tempura', 'Wagyu Beef', 'Matcha Desserts', 'Takoyaki'],
+    foods: [
+      { name: 'Sushi', image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80' },
+      { name: 'Ramen', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Tempura', image: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=80' },
+      { name: 'Wagyu Beef', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Matcha Desserts', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
+      { name: 'Takoyaki', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Tokyo', 'Japan'),
   },
   {
     id: 'bali',
@@ -144,7 +242,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Ubud Rice Terraces', 'Tanah Lot', 'Seminyak Beach', 'Mount Batur'],
     category: 'beach',
-    foods: ['Nasi Goreng', 'Babi Guling', 'Satay', 'Lawar', 'Bebek Betutu', 'Pisang Goreng'],
+    foods: [
+      { name: 'Nasi Goreng', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Babi Guling', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Satay', image: 'https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=400&q=80' },
+      { name: 'Lawar', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bebek Betutu', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Pisang Goreng', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Bali', 'Indonesia'),
   },
   {
     id: 'kyoto',
@@ -157,7 +263,15 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Fushimi Inari', 'Kinkaku-ji', 'Arashiyama Bamboo', 'Gion District'],
     category: 'cultural',
-    foods: ['Kaiseki Cuisine', 'Yudofu', 'Matcha Sweets', 'Obanzai', 'Tsukemono', 'Yuba'],
+    foods: [
+      { name: 'Kaiseki Cuisine', image: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=80' },
+      { name: 'Yudofu', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Matcha Sweets', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
+      { name: 'Obanzai', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Tsukemono', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80' },
+      { name: 'Yuba', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kyoto', 'Japan'),
   },
   {
     id: 'maldives',
@@ -170,7 +284,15 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Overwater Villas', 'Snorkeling', 'Bioluminescent Beach', 'Spa Retreats'],
     category: 'beach',
-    foods: ['Garudhiya', 'Mas Huni', 'Fihunu Mas', 'Roshi', 'Hedhikaa', 'Fresh Seafood'],
+    foods: [
+      { name: 'Garudhiya', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Mas Huni', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Fihunu Mas', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Roshi', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Hedhikaa', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Fresh Seafood', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Maldives', 'Maldives'),
   },
   {
     id: 'thailand',
@@ -183,7 +305,15 @@ export const destinations: Destination[] = [
     avgTemp: '29°C',
     highlights: ['Grand Palace', 'Wat Pho', 'Chatuchak Market', 'Thai Cuisine'],
     category: 'cultural',
-    foods: ['Pad Thai', 'Tom Yum', 'Green Curry', 'Mango Sticky Rice', 'Som Tam', 'Khao Pad'],
+    foods: [
+      { name: 'Pad Thai', image: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&q=80' },
+      { name: 'Tom Yum', image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=400&q=80' },
+      { name: 'Green Curry', image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=80' },
+      { name: 'Mango Sticky Rice', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
+      { name: 'Som Tam', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Khao Pad', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Bangkok', 'Thailand'),
   },
   {
     id: 'vietnam',
@@ -196,7 +326,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Junk Boat Cruise', 'Kayaking', 'Floating Villages', 'Cave Exploration'],
     category: 'nature',
-    foods: ['Pho', 'Banh Mi', 'Spring Rolls', 'Bun Cha', 'Seafood BBQ', 'Che'],
+    foods: [
+      { name: 'Pho', image: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&q=80' },
+      { name: 'Banh Mi', image: 'https://images.unsplash.com/photo-1600454021061-f10b3e4f0e3b?w=400&q=80' },
+      { name: 'Spring Rolls', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Bun Cha', image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80' },
+      { name: 'Seafood BBQ', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Che', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Ha Long Bay', 'Vietnam'),
   },
   {
     id: 'singapore',
@@ -209,7 +347,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Gardens by the Bay', 'Marina Bay Sands', 'Hawker Centers', 'Sentosa Island'],
     category: 'city',
-    foods: ['Hainanese Chicken Rice', 'Chilli Crab', 'Laksa', 'Satay', 'Kaya Toast', 'Char Kway Teow'],
+    foods: [
+      { name: 'Hainanese Chicken Rice', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Chilli Crab', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Laksa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Satay', image: 'https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=400&q=80' },
+      { name: 'Kaya Toast', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Char Kway Teow', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Singapore', 'Singapore'),
   },
 
   // India - All States and Popular Destinations
@@ -225,7 +371,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Tirumala Temple', 'Sri Padmavathi Temple', 'Chandragiri Fort', 'Talakona Waterfalls'],
     category: 'cultural',
-    foods: ['Tirupati Laddu', 'Pulihora', 'Pesarattu', 'Gongura Pachadi', 'Avakaya', 'Andhra Biryani'],
+    foods: [
+      { name: 'Tirupati Laddu', image: 'https://images.unsplash.com/photo-1666190094762-2e05d tried8f1f0?w=400&q=80' },
+      { name: 'Pulihora', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Pesarattu', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Gongura Pachadi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Avakaya', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Andhra Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Tirupati', 'India'),
   },
   {
     id: 'visakhapatnam',
@@ -238,7 +392,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Rishikonda Beach', 'Borra Caves', 'Kailasagiri Hill', 'Araku Valley'],
     category: 'beach',
-    foods: ['Bamboo Chicken', 'Gongura Mamsam', 'Vizag Sea Food', 'Punugulu', 'Araku Coffee', 'Royyala Iguru'],
+    foods: [
+      { name: 'Bamboo Chicken', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Gongura Mamsam', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Vizag Sea Food', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Punugulu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Araku Coffee', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+      { name: 'Royyala Iguru', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Visakhapatnam', 'India'),
   },
 
   // Arunachal Pradesh
@@ -253,7 +415,15 @@ export const destinations: Destination[] = [
     avgTemp: '10°C',
     highlights: ['Tawang Monastery', 'Sela Pass', 'Madhuri Lake', 'War Memorial'],
     category: 'cultural',
-    foods: ['Thukpa', 'Momos', 'Zan', 'Khura', 'Chura Sabji', 'Butter Tea'],
+    foods: [
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Zan', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Khura', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Chura Sabji', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Butter Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Tawang', 'India'),
   },
 
   // Assam
@@ -268,7 +438,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Kamakhya Temple', 'Brahmaputra River Cruise', 'Assam State Zoo', 'Umananda Island'],
     category: 'cultural',
-    foods: ['Assamese Fish Curry', 'Masor Tenga', 'Pitha', 'Duck Meat Curry', 'Khar', 'Assamese Thali'],
+    foods: [
+      { name: 'Assamese Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Masor Tenga', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Duck Meat Curry', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Khar', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Assamese Thali', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Guwahati', 'India'),
   },
   {
     id: 'kaziranga',
@@ -281,7 +459,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Rhino Safari', 'Elephant Ride', 'Bird Watching', 'Tea Gardens'],
     category: 'nature',
-    foods: ['Jolpan', 'Aloo Pitika', 'Xaak Bhaji', 'Pork with Bamboo Shoot', 'Rice Beer', 'Assam Tea'],
+    foods: [
+      { name: 'Jolpan', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80' },
+      { name: 'Aloo Pitika', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Xaak Bhaji', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Pork with Bamboo Shoot', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Rice Beer', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Assam Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kaziranga', 'India'),
   },
 
   // Bihar
@@ -296,7 +482,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Mahabodhi Temple', 'Bodhi Tree', 'Great Buddha Statue', 'Thai Monastery'],
     category: 'cultural',
-    foods: ['Litti Chokha', 'Sattu Paratha', 'Dal Pitha', 'Khaja', 'Thekua', 'Dahi Chura'],
+    foods: [
+      { name: 'Litti Chokha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Sattu Paratha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Dal Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Khaja', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Thekua', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Dahi Chura', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Bodh Gaya', 'India'),
   },
 
   // Chhattisgarh
@@ -311,7 +505,15 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Chitrakote Falls', 'Tirathgarh Falls', 'Kanger Valley', 'Kutumsar Caves'],
     category: 'nature',
-    foods: ['Fara', 'Muthiya', 'Chila', 'Iddhar', 'Angakar Roti', 'Bore Baasi'],
+    foods: [
+      { name: 'Fara', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Muthiya', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Chila', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Iddhar', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Angakar Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Bore Baasi', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Chitrakote', 'India'),
   },
 
   // Goa
@@ -326,7 +528,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Baga Beach', 'Old Goa Churches', 'Dudhsagar Falls', 'Anjuna Flea Market'],
     category: 'beach',
-    foods: ['Fish Curry Rice', 'Vindaloo', 'Bebinca', 'Xacuti', 'Prawn Balchão', 'Feni'],
+    foods: [
+      { name: 'Fish Curry Rice', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Vindaloo', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Bebinca', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Xacuti', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Prawn Balchão', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Feni', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Goa', 'India'),
   },
 
   // Gujarat
@@ -341,7 +551,15 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['White Desert', 'Rann Utsav', 'Kalo Dungar', 'Kutch Museum'],
     category: 'nature',
-    foods: ['Dabeli', 'Dhokla', 'Khandvi', 'Thepla', 'Kutchi Dabeli', 'Undhiyu'],
+    foods: [
+      { name: 'Dabeli', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Dhokla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Khandvi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Thepla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Kutchi Dabeli', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Undhiyu', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kutch', 'India'),
   },
   {
     id: 'gir',
@@ -354,7 +572,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Asiatic Lions', 'Kamleshwar Dam', 'Crocodile Breeding Centre', 'Safari'],
     category: 'adventure',
-    foods: ['Sev Usal', 'Fafda Jalebi', 'Handvo', 'Gathiya', 'Malpua', 'Khakhra'],
+    foods: [
+      { name: 'Sev Usal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Fafda Jalebi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Handvo', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Gathiya', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Malpua', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Khakhra', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Gir', 'India'),
   },
   {
     id: 'somnath',
@@ -367,7 +593,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Somnath Temple', 'Triveni Sangam', 'Bhalka Tirtha', 'Light & Sound Show'],
     category: 'cultural',
-    foods: ['Gujarati Thali', 'Khichdi Kadhi', 'Shrikhand', 'Basundi', 'Mohanthal', 'Ghughra'],
+    foods: [
+      { name: 'Gujarati Thali', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Khichdi Kadhi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Shrikhand', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Basundi', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Mohanthal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Ghughra', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Somnath', 'India'),
   },
 
   // Haryana
@@ -382,7 +616,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Brahma Sarovar', 'Krishna Museum', 'Jyotisar', 'Bhadrakali Temple'],
     category: 'cultural',
-    foods: ['Bajra Roti', 'Kadhi Pakora', 'Singri ki Sabzi', 'Churma', 'Kheer', 'Bathua Raita'],
+    foods: [
+      { name: 'Bajra Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Kadhi Pakora', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Singri ki Sabzi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Churma', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Kheer', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Bathua Raita', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kurukshetra', 'India'),
   },
 
   // Himachal Pradesh
@@ -397,7 +639,15 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Mall Road', 'Christ Church', 'Jakhoo Temple', 'Kufri'],
     category: 'nature',
-    foods: ['Siddu', 'Madra', 'Chana Madra', 'Dham', 'Babru', 'Aktori'],
+    foods: [
+      { name: 'Siddu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Madra', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chana Madra', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dham', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Babru', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Aktori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Shimla', 'India'),
   },
   {
     id: 'manali',
@@ -410,7 +660,15 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Rohtang Pass', 'Solang Valley', 'Hadimba Temple', 'Old Manali'],
     category: 'adventure',
-    foods: ['Trout Fish', 'Tudkiya Bhath', 'Patande', 'Bhey', 'Kullu Trout', 'Mittha'],
+    foods: [
+      { name: 'Trout Fish', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Tudkiya Bhath', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Patande', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bhey', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Kullu Trout', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Mittha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Manali', 'India'),
   },
   {
     id: 'dharamshala',
@@ -423,7 +681,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['McLeod Ganj', 'Tsuglagkhang Complex', 'Bhagsu Waterfall', 'Triund Trek'],
     category: 'cultural',
-    foods: ['Tibetan Momos', 'Thukpa', 'Thenthuk', 'Tingmo', 'Butter Tea', 'Shabalay'],
+    foods: [
+      { name: 'Tibetan Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Thenthuk', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Tingmo', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Butter Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Shabalay', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Dharamshala', 'India'),
   },
   {
     id: 'spiti',
@@ -436,7 +702,15 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Key Monastery', 'Chandratal Lake', 'Kibber Village', 'Pin Valley'],
     category: 'adventure',
-    foods: ['Thukpa', 'Momos', 'Chha Gosir', 'Paba', 'Butter Tea', 'Tsampa'],
+    foods: [
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Chha Gosir', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Paba', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Butter Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Tsampa', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Spiti Valley', 'India'),
   },
 
   // Jharkhand
@@ -451,7 +725,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Hundru Falls', 'Jonha Falls', 'Dassam Falls', 'Rock Garden'],
     category: 'nature',
-    foods: ['Dhuska', 'Pittha', 'Handia Rice Beer', 'Rugra', 'Chilka Roti', 'Litti Chokha'],
+    foods: [
+      { name: 'Dhuska', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pittha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Handia Rice Beer', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Rugra', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chilka Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Litti Chokha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Ranchi', 'India'),
   },
 
   // Karnataka
@@ -466,7 +748,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Lalbagh Gardens', 'Cubbon Park', 'Bangalore Palace', 'MG Road'],
     category: 'city',
-    foods: ['Masala Dosa', 'Bisi Bele Bath', 'Ragi Mudde', 'Mangalorean Fish Curry', 'Filter Coffee', 'Obbattu'],
+    foods: [
+      { name: 'Masala Dosa', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Bisi Bele Bath', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Ragi Mudde', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Mangalorean Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Filter Coffee', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+      { name: 'Obbattu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Bangalore', 'India'),
   },
   {
     id: 'mysore',
@@ -479,7 +769,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Mysore Palace', 'Chamundi Hill', 'Brindavan Gardens', 'Mysore Zoo'],
     category: 'cultural',
-    foods: ['Mysore Pak', 'Mysore Masala Dosa', 'Nanjangud Banana', 'Kosambari', 'Chiroti', 'Mysore Rasam'],
+    foods: [
+      { name: 'Mysore Pak', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mysore Masala Dosa', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Nanjangud Banana', image: 'https://images.unsplash.com/photo-1481349518771-20055b2a7b24?w=400&q=80' },
+      { name: 'Kosambari', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chiroti', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mysore Rasam', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Mysore', 'India'),
   },
   {
     id: 'hampi',
@@ -492,7 +790,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Virupaksha Temple', 'Vittala Temple', 'Stone Chariot', 'Hampi Bazaar'],
     category: 'cultural',
-    foods: ['Obbattu', 'Jolada Rotti', 'Enne Badnekai', 'Nuchinunde', 'Holige', 'Ragi Mudde'],
+    foods: [
+      { name: 'Obbattu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Jolada Rotti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Enne Badnekai', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Nuchinunde', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Holige', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Ragi Mudde', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Hampi', 'India'),
   },
   {
     id: 'coorg',
@@ -505,7 +811,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Abbey Falls', 'Raja\'s Seat', 'Coffee Plantations', 'Namdroling Monastery'],
     category: 'nature',
-    foods: ['Pandi Curry', 'Kadambuttu', 'Nool Puttu', 'Akki Rotti', 'Coorg Pork', 'Filter Coffee'],
+    foods: [
+      { name: 'Pandi Curry', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Kadambuttu', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Nool Puttu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Akki Rotti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Coorg Pork', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Filter Coffee', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Coorg', 'India'),
   },
 
   // Kerala
@@ -520,7 +834,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Alleppey Houseboat', 'Kumarakom', 'Vembanad Lake', 'Village Tours'],
     category: 'romantic',
-    foods: ['Kerala Sadya', 'Karimeen Pollichathu', 'Appam with Stew', 'Puttu Kadala', 'Malabar Biryani', 'Payasam'],
+    foods: [
+      { name: 'Kerala Sadya', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Karimeen Pollichathu', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Appam with Stew', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Puttu Kadala', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Malabar Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Payasam', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Alleppey', 'India'),
   },
   {
     id: 'munnar',
@@ -533,7 +855,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Tea Gardens', 'Eravikulam National Park', 'Mattupetty Dam', 'Top Station'],
     category: 'nature',
-    foods: ['Kerala Parotta', 'Fish Molee', 'Beef Fry', 'Kappa with Fish Curry', 'Ela Ada', 'Pazham Pori'],
+    foods: [
+      { name: 'Kerala Parotta', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Fish Molee', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Beef Fry', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Kappa with Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Ela Ada', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pazham Pori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Munnar', 'India'),
   },
   {
     id: 'kovalam',
@@ -546,7 +876,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Lighthouse Beach', 'Ayurveda Spa', 'Hawa Beach', 'Vizhinjam Mosque'],
     category: 'beach',
-    foods: ['Prawn Curry', 'Meen Pollichathu', 'Coconut Fish Curry', 'Thalassery Biryani', 'Unniyappam', 'Kozhikode Halwa'],
+    foods: [
+      { name: 'Prawn Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Meen Pollichathu', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Coconut Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Thalassery Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Unniyappam', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Kozhikode Halwa', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kovalam', 'India'),
   },
   {
     id: 'thekkady',
@@ -559,7 +897,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Periyar Tiger Reserve', 'Spice Gardens', 'Bamboo Rafting', 'Elephant Camp'],
     category: 'adventure',
-    foods: ['Kerala Fish Curry', 'Erachi Varutharacha', 'Spice Tea', 'Tapioca with Fish', 'Banana Chips', 'Cardamom Tea'],
+    foods: [
+      { name: 'Kerala Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Erachi Varutharacha', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Spice Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Tapioca with Fish', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Banana Chips', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Cardamom Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Thekkady', 'India'),
   },
 
   // Madhya Pradesh
@@ -574,7 +920,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Kandariya Mahadeva Temple', 'Lakshmana Temple', 'Light & Sound Show', 'Panna National Park'],
     category: 'cultural',
-    foods: ['Poha', 'Dal Bafla', 'Bhutte ki Kees', 'Malpua', 'Mawa Bati', 'Sabudana Khichdi'],
+    foods: [
+      { name: 'Poha', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dal Bafla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bhutte ki Kees', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Malpua', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mawa Bati', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Sabudana Khichdi', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Khajuraho', 'India'),
   },
   {
     id: 'bandhavgarh',
@@ -587,7 +941,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Tiger Safari', 'Bandhavgarh Fort', 'Ancient Caves', 'Bird Watching'],
     category: 'adventure',
-    foods: ['Bihari Kabab', 'Seekh Kabab', 'Rogan Josh', 'Poha Jalebi', 'Chakki ki Shak', 'Khopra Pak'],
+    foods: [
+      { name: 'Bihari Kabab', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Seekh Kabab', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Rogan Josh', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Poha Jalebi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Chakki ki Shak', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Khopra Pak', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Bandhavgarh', 'India'),
   },
   {
     id: 'orchha',
@@ -600,7 +962,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Orchha Fort', 'Raja Mahal', 'Chaturbhuj Temple', 'Royal Cenotaphs'],
     category: 'cultural',
-    foods: ['Bundelkhandi Cuisine', 'Raita', 'Daal Bafla', 'Khurma', 'Chakki Shaak', 'Lavang Lata'],
+    foods: [
+      { name: 'Bundelkhandi Cuisine', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Raita', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Daal Bafla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Khurma', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Chakki Shaak', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Lavang Lata', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Orchha', 'India'),
   },
 
   // Maharashtra
@@ -615,7 +985,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Gateway of India', 'Marine Drive', 'Elephanta Caves', 'Bollywood Tours'],
     category: 'city',
-    foods: ['Vada Pav', 'Pav Bhaji', 'Bombay Sandwich', 'Bhel Puri', 'Misal Pav', 'Bombil Fry'],
+    foods: [
+      { name: 'Vada Pav', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Pav Bhaji', image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&q=80' },
+      { name: 'Bombay Sandwich', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bhel Puri', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Misal Pav', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bombil Fry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Mumbai', 'India'),
   },
   {
     id: 'ajanta-ellora',
@@ -628,7 +1006,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Ajanta Caves', 'Ellora Caves', 'Kailasa Temple', 'Ancient Paintings'],
     category: 'cultural',
-    foods: ['Puran Poli', 'Shrikhand', 'Bharli Vangi', 'Thalipeeth', 'Sabudana Vada', 'Modak'],
+    foods: [
+      { name: 'Puran Poli', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Shrikhand', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Bharli Vangi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Thalipeeth', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Sabudana Vada', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Modak', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Aurangabad', 'India'),
   },
   {
     id: 'lonavala',
@@ -641,7 +1027,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Tiger Point', 'Bhushi Dam', 'Karla Caves', 'Lohagad Fort'],
     category: 'nature',
-    foods: ['Chikki', 'Fudge', 'Vada Pav', 'Corn on Cob', 'Kanda Bhaji', 'Chai'],
+    foods: [
+      { name: 'Chikki', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Fudge', image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80' },
+      { name: 'Vada Pav', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Corn on Cob', image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&q=80' },
+      { name: 'Kanda Bhaji', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Chai', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Lonavala', 'India'),
   },
 
   // Manipur
@@ -656,7 +1050,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Loktak Lake', 'Ima Keithel', 'Kangla Fort', 'War Cemetery'],
     category: 'cultural',
-    foods: ['Eromba', 'Singju', 'Chamthong', 'Kangsoi', 'Chak-hao Kheer', 'Paknam'],
+    foods: [
+      { name: 'Eromba', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Singju', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chamthong', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Kangsoi', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Chak-hao Kheer', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Paknam', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Imphal', 'India'),
   },
 
   // Meghalaya
@@ -671,7 +1073,15 @@ export const destinations: Destination[] = [
     avgTemp: '17°C',
     highlights: ['Elephant Falls', 'Shillong Peak', 'Don Bosco Museum', 'Ward\'s Lake'],
     category: 'nature',
-    foods: ['Jadoh', 'Doh Khlieh', 'Tungrymbai', 'Ki Kpu', 'Pukhlein', 'Rice Beer'],
+    foods: [
+      { name: 'Jadoh', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Doh Khlieh', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Tungrymbai', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Ki Kpu', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pukhlein', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Rice Beer', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Shillong', 'India'),
   },
   {
     id: 'cherrapunji',
@@ -684,7 +1094,15 @@ export const destinations: Destination[] = [
     avgTemp: '16°C',
     highlights: ['Living Root Bridges', 'Nohkalikai Falls', 'Mawsmai Caves', 'Seven Sisters Falls'],
     category: 'adventure',
-    foods: ['Doh Neiiong', 'Nakham Bitchi', 'Minil Songa', 'Dohjem', 'Pumaloi', 'Black Sesame'],
+    foods: [
+      { name: 'Doh Neiiong', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Nakham Bitchi', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Minil Songa', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dohjem', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Pumaloi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Black Sesame', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Cherrapunji', 'India'),
   },
 
   // Mizoram
@@ -699,7 +1117,15 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['Durtlang Hills', 'Solomon Temple', 'Mizoram State Museum', 'Reiek'],
     category: 'cultural',
-    foods: ['Bai', 'Vawksa Rep', 'Misa Mach Poora', 'Koat Pitha', 'Sawhchiar', 'Chhangban'],
+    foods: [
+      { name: 'Bai', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Vawksa Rep', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Misa Mach Poora', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Koat Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Sawhchiar', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Chhangban', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Aizawl', 'India'),
   },
 
   // Nagaland
@@ -714,7 +1140,15 @@ export const destinations: Destination[] = [
     avgTemp: '18°C',
     highlights: ['Hornbill Festival', 'War Cemetery', 'Dzukou Valley', 'State Museum'],
     category: 'cultural',
-    foods: ['Smoked Pork', 'Axone', 'Bamboo Shoot Curry', 'Galho', 'Zutho', 'Naga Chutney'],
+    foods: [
+      { name: 'Smoked Pork', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Axone', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bamboo Shoot Curry', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Galho', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Zutho', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Naga Chutney', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kohima', 'India'),
   },
 
   // Odisha
@@ -729,7 +1163,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Jagannath Temple', 'Puri Beach', 'Rath Yatra', 'Chilika Lake'],
     category: 'cultural',
-    foods: ['Dalma', 'Chenna Poda', 'Rasagola', 'Pakhala Bhata', 'Machha Besara', 'Chhena Jhili'],
+    foods: [
+      { name: 'Dalma', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chenna Poda', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Rasagola', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pakhala Bhata', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Machha Besara', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Chhena Jhili', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Puri', 'India'),
   },
   {
     id: 'konark',
@@ -742,7 +1184,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Sun Temple', 'Konark Beach', 'Chandrabhaga Beach', 'ASI Museum'],
     category: 'cultural',
-    foods: ['Machi Jhola', 'Besara', 'Santula', 'Enduri Pitha', 'Kakara Pitha', 'Khaja'],
+    foods: [
+      { name: 'Machi Jhola', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Besara', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Santula', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Enduri Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Kakara Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Khaja', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Konark', 'India'),
   },
 
   // Punjab
@@ -757,7 +1207,15 @@ export const destinations: Destination[] = [
     avgTemp: '23°C',
     highlights: ['Golden Temple', 'Wagah Border', 'Jallianwala Bagh', 'Partition Museum'],
     category: 'cultural',
-    foods: ['Langar', 'Amritsari Kulcha', 'Butter Chicken', 'Lassi', 'Sarson Ka Saag', 'Makki di Roti'],
+    foods: [
+      { name: 'Langar', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Amritsari Kulcha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Butter Chicken', image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
+      { name: 'Lassi', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+      { name: 'Sarson Ka Saag', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Makki di Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Amritsar', 'India'),
   },
 
   // Rajasthan
@@ -772,7 +1230,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Amber Fort', 'Hawa Mahal', 'City Palace', 'Jantar Mantar'],
     category: 'cultural',
-    foods: ['Dal Baati Churma', 'Ghevar', 'Pyaaz Kachori', 'Laal Maas', 'Mawa Kachori', 'Rajasthani Thali'],
+    foods: [
+      { name: 'Dal Baati Churma', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Ghevar', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pyaaz Kachori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Laal Maas', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Mawa Kachori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Rajasthani Thali', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Jaipur', 'India'),
   },
   {
     id: 'udaipur',
@@ -785,7 +1251,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Lake Pichola', 'City Palace', 'Jag Mandir', 'Monsoon Palace'],
     category: 'romantic',
-    foods: ['Daal Baati', 'Gatte ki Sabzi', 'Kachori', 'Malpua', 'Shahi Paneer', 'Kulfi'],
+    foods: [
+      { name: 'Daal Baati', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Gatte ki Sabzi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Kachori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Malpua', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Shahi Paneer', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Kulfi', image: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Udaipur', 'India'),
   },
   {
     id: 'jodhpur',
@@ -798,7 +1272,15 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Mehrangarh Fort', 'Jaswant Thada', 'Clock Tower Market', 'Umaid Bhawan Palace'],
     category: 'cultural',
-    foods: ['Mirchi Bada', 'Makhaniya Lassi', 'Pyaaz ki Kachori', 'Daal Baati Churma', 'Mohan Thaal', 'Ker Sangri'],
+    foods: [
+      { name: 'Mirchi Bada', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Makhaniya Lassi', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+      { name: 'Pyaaz ki Kachori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Daal Baati Churma', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mohan Thaal', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Ker Sangri', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Jodhpur', 'India'),
   },
   {
     id: 'jaisalmer',
@@ -811,7 +1293,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Jaisalmer Fort', 'Sam Sand Dunes', 'Patwon Ki Haveli', 'Desert Safari'],
     category: 'adventure',
-    foods: ['Ker Sangri', 'Gatte ki Sabzi', 'Bajre ki Roti', 'Murg-e-Subz', 'Kair', 'Bhuna Kukda'],
+    foods: [
+      { name: 'Ker Sangri', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Gatte ki Sabzi', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bajre ki Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Murg-e-Subz', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Kair', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bhuna Kukda', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Jaisalmer', 'India'),
   },
   {
     id: 'pushkar',
@@ -824,7 +1314,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Brahma Temple', 'Pushkar Lake', 'Camel Fair', 'Savitri Temple'],
     category: 'cultural',
-    foods: ['Malpua', 'Poha', 'Dal Pakwan', 'Rajasthani Thali', 'Bhuna Murg', 'Churma'],
+    foods: [
+      { name: 'Malpua', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Poha', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dal Pakwan', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Rajasthani Thali', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Bhuna Murg', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Churma', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Pushkar', 'India'),
   },
 
   // Sikkim
@@ -839,7 +1337,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Tsomgo Lake', 'Nathula Pass', 'Rumtek Monastery', 'MG Marg'],
     category: 'nature',
-    foods: ['Momos', 'Thukpa', 'Gundruk', 'Phagshapa', 'Sel Roti', 'Chhurpi'],
+    foods: [
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Gundruk', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Phagshapa', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Sel Roti', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Chhurpi', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Gangtok', 'India'),
   },
   {
     id: 'pelling',
@@ -852,7 +1358,15 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Kanchenjunga View', 'Pemayangtse Monastery', 'Rabdentse Ruins', 'Khecheopalri Lake'],
     category: 'nature',
-    foods: ['Sikkimese Thali', 'Kinema Curry', 'Dhindo', 'Chhurpi Soup', 'Tongba', 'Nettle Soup'],
+    foods: [
+      { name: 'Sikkimese Thali', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Kinema Curry', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dhindo', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Chhurpi Soup', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Tongba', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Nettle Soup', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Pelling', 'India'),
   },
 
   // Tamil Nadu
@@ -867,7 +1381,15 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Marina Beach', 'Kapaleeshwarar Temple', 'Fort St. George', 'DakshinaChitra'],
     category: 'city',
-    foods: ['Idli Sambar', 'Dosa', 'Chettinad Chicken', 'Filter Coffee', 'Pongal', 'Kothu Parotta'],
+    foods: [
+      { name: 'Idli Sambar', image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&q=80' },
+      { name: 'Dosa', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Chettinad Chicken', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Filter Coffee', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+      { name: 'Pongal', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Kothu Parotta', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Chennai', 'India'),
   },
   {
     id: 'mahabalipuram',
@@ -880,7 +1402,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Shore Temple', 'Pancha Rathas', 'Arjuna\'s Penance', 'Krishna\'s Butter Ball'],
     category: 'cultural',
-    foods: ['Fresh Seafood', 'Prawn Curry', 'Fish Fry', 'Appam', 'Crab Masala', 'Coconut Chutney'],
+    foods: [
+      { name: 'Fresh Seafood', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Prawn Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Fish Fry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Appam', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Crab Masala', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Coconut Chutney', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Mahabalipuram', 'India'),
   },
   {
     id: 'madurai',
@@ -893,7 +1423,15 @@ export const destinations: Destination[] = [
     avgTemp: '30°C',
     highlights: ['Meenakshi Temple', 'Thirumalai Nayak Palace', 'Gandhi Museum', 'Banana Market'],
     category: 'cultural',
-    foods: ['Jigarthanda', 'Kari Dosai', 'Paruthi Paal', 'Madurai Mutton', 'Idiyappam', 'Paniyaram'],
+    foods: [
+      { name: 'Jigarthanda', image: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&q=80' },
+      { name: 'Kari Dosai', image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&q=80' },
+      { name: 'Paruthi Paal', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Madurai Mutton', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Idiyappam', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Paniyaram', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Madurai', 'India'),
   },
   {
     id: 'ooty',
@@ -906,7 +1444,15 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Nilgiri Mountain Railway', 'Botanical Gardens', 'Ooty Lake', 'Doddabetta Peak'],
     category: 'nature',
-    foods: ['Homemade Chocolates', 'Varkey', 'Ooty Cheese', 'Lemon Eucalyptus Tea', 'Mushroom Curry', 'Toda Honey'],
+    foods: [
+      { name: 'Homemade Chocolates', image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80' },
+      { name: 'Varkey', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Ooty Cheese', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&q=80' },
+      { name: 'Lemon Eucalyptus Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Mushroom Curry', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Toda Honey', image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Ooty', 'India'),
   },
   {
     id: 'pondicherry',
@@ -919,7 +1465,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['French Quarter', 'Auroville', 'Paradise Beach', 'Sri Aurobindo Ashram'],
     category: 'romantic',
-    foods: ['French Pastries', 'Crepes', 'Pondy Fish Curry', 'Croissants', 'Baguettes', 'Cafe Au Lait'],
+    foods: [
+      { name: 'French Pastries', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+      { name: 'Crepes', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80' },
+      { name: 'Pondy Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Croissants', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+      { name: 'Baguettes', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Cafe Au Lait', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Pondicherry', 'India'),
   },
 
   // Telangana
@@ -934,7 +1488,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Charminar', 'Golconda Fort', 'Hussain Sagar', 'Ramoji Film City'],
     category: 'city',
-    foods: ['Hyderabadi Biryani', 'Haleem', 'Double Ka Meetha', 'Mirchi Ka Salan', 'Irani Chai', 'Qubani Ka Meetha'],
+    foods: [
+      { name: 'Hyderabadi Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Haleem', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Double Ka Meetha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mirchi Ka Salan', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Irani Chai', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Qubani Ka Meetha', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Hyderabad', 'India'),
   },
 
   // Tripura
@@ -949,7 +1511,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Ujjayanta Palace', 'Neermahal', 'Tripura Sundari Temple', 'Jampui Hills'],
     category: 'cultural',
-    foods: ['Mui Borok', 'Chakhwi', 'Wahan Mosdeng', 'Bhangui', 'Bamboo Shoot Curry', 'Pitha'],
+    foods: [
+      { name: 'Mui Borok', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Chakhwi', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Wahan Mosdeng', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bhangui', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Bamboo Shoot Curry', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Pitha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Agartala', 'India'),
   },
 
   // Uttar Pradesh
@@ -964,7 +1534,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Ganga Aarti', 'Dashashwamedh Ghat', 'Kashi Vishwanath Temple', 'Sarnath'],
     category: 'cultural',
-    foods: ['Banarasi Paan', 'Kachori Sabzi', 'Thandai', 'Chaat', 'Malaiyo', 'Banarasi Lassi'],
+    foods: [
+      { name: 'Banarasi Paan', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Kachori Sabzi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Thandai', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+      { name: 'Chaat', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Malaiyo', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Banarasi Lassi', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Varanasi', 'India'),
   },
   {
     id: 'agra',
@@ -977,7 +1555,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Taj Mahal', 'Agra Fort', 'Fatehpur Sikri', 'Mehtab Bagh'],
     category: 'romantic',
-    foods: ['Petha', 'Bedai', 'Mughlai Cuisine', 'Dalmoth', 'Jalebi', 'Paratha'],
+    foods: [
+      { name: 'Petha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bedai', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mughlai Cuisine', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Dalmoth', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Jalebi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Paratha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Agra', 'India'),
   },
   {
     id: 'lucknow',
@@ -990,7 +1576,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Bara Imambara', 'Rumi Darwaza', 'Chota Imambara', 'Hazratganj'],
     category: 'cultural',
-    foods: ['Tunday Kababi', 'Lucknowi Biryani', 'Galawati Kebab', 'Sheermal', 'Kulcha Nahari', 'Malai Makhan'],
+    foods: [
+      { name: 'Tunday Kababi', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Lucknowi Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Galawati Kebab', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Sheermal', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Kulcha Nahari', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Malai Makhan', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Lucknow', 'India'),
   },
 
   // Uttarakhand
@@ -1005,7 +1599,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Laxman Jhula', 'River Rafting', 'Yoga Ashrams', 'Ganga Aarti'],
     category: 'adventure',
-    foods: ['Aloo ke Gutke', 'Kafuli', 'Phaanu', 'Bhang ki Chutney', 'Singori', 'Bal Mithai'],
+    foods: [
+      { name: 'Aloo ke Gutke', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Kafuli', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Phaanu', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Bhang ki Chutney', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Singori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bal Mithai', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Rishikesh', 'India'),
   },
   {
     id: 'nainital',
@@ -1018,7 +1620,15 @@ export const destinations: Destination[] = [
     avgTemp: '15°C',
     highlights: ['Naini Lake', 'Naina Devi Temple', 'Snow View Point', 'Mall Road'],
     category: 'nature',
-    foods: ['Bhatt ki Churkani', 'Chainsoo', 'Dubuk', 'Baadi', 'Jhangora Kheer', 'Kumaoni Raita'],
+    foods: [
+      { name: 'Bhatt ki Churkani', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chainsoo', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Dubuk', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Baadi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Jhangora Kheer', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Kumaoni Raita', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Nainital', 'India'),
   },
   {
     id: 'mussoorie',
@@ -1031,7 +1641,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Kempty Falls', 'Gun Hill', 'Camel\'s Back Road', 'Lal Tibba'],
     category: 'nature',
-    foods: ['Maggi at Mall Road', 'Tibetan Food', 'Garhwali Cuisine', 'Momos', 'Hot Chocolate', 'Pakoras'],
+    foods: [
+      { name: 'Maggi at Mall Road', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Tibetan Food', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Garhwali Cuisine', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Hot Chocolate', image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&q=80' },
+      { name: 'Pakoras', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Mussoorie', 'India'),
   },
   {
     id: 'haridwar',
@@ -1044,7 +1662,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Har Ki Pauri', 'Ganga Aarti', 'Mansa Devi Temple', 'Chandi Devi Temple'],
     category: 'cultural',
-    foods: ['Chole Bhature', 'Aloo Puri', 'Kachori', 'Lassi', 'Peda', 'Rabri'],
+    foods: [
+      { name: 'Chole Bhature', image: 'https://images.unsplash.com/photo-1626132647523-66d5bf420d2f?w=400&q=80' },
+      { name: 'Aloo Puri', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Kachori', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Lassi', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+      { name: 'Peda', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Rabri', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Haridwar', 'India'),
   },
   {
     id: 'auli',
@@ -1057,7 +1683,15 @@ export const destinations: Destination[] = [
     avgTemp: '5°C',
     highlights: ['Skiing', 'Gondola Ride', 'Nanda Devi View', 'Artificial Lake'],
     category: 'adventure',
-    foods: ['Kafuli', 'Mandua ki Roti', 'Chainsoo', 'Gahat Dal', 'Arsa', 'Gulgula'],
+    foods: [
+      { name: 'Kafuli', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Mandua ki Roti', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Chainsoo', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Gahat Dal', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Arsa', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Gulgula', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Auli', 'India'),
   },
 
   // West Bengal
@@ -1072,7 +1706,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Victoria Memorial', 'Howrah Bridge', 'Durga Puja', 'Park Street'],
     category: 'city',
-    foods: ['Rosogolla', 'Mishti Doi', 'Kathi Roll', 'Fish Curry', 'Puchka', 'Sandesh'],
+    foods: [
+      { name: 'Rosogolla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mishti Doi', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Kathi Roll', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Puchka', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Sandesh', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Kolkata', 'India'),
   },
   {
     id: 'darjeeling',
@@ -1085,7 +1727,15 @@ export const destinations: Destination[] = [
     avgTemp: '13°C',
     highlights: ['Tiger Hill Sunrise', 'Toy Train', 'Tea Gardens', 'Batasia Loop'],
     category: 'nature',
-    foods: ['Darjeeling Tea', 'Momos', 'Thukpa', 'Churpi', 'Sel Roti', 'Aloo Dum'],
+    foods: [
+      { name: 'Darjeeling Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Churpi', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&q=80' },
+      { name: 'Sel Roti', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Aloo Dum', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Darjeeling', 'India'),
   },
   {
     id: 'sundarbans',
@@ -1098,7 +1748,15 @@ export const destinations: Destination[] = [
     avgTemp: '27°C',
     highlights: ['Tiger Safari', 'Mangrove Forest', 'Bird Watching', 'Boat Cruise'],
     category: 'adventure',
-    foods: ['Chingri Malai Curry', 'Ilish Bhapa', 'Macher Jhol', 'Doi Maach', 'Patishapta', 'Pithe'],
+    foods: [
+      { name: 'Chingri Malai Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Ilish Bhapa', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Macher Jhol', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Doi Maach', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Patishapta', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pithe', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Sundarbans', 'India'),
   },
 
   // Union Territories
@@ -1114,7 +1772,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Havelock Island', 'Radhanagar Beach', 'Cellular Jail', 'Scuba Diving'],
     category: 'beach',
-    foods: ['Fresh Seafood', 'Fish Curry', 'Lobster', 'Coconut Prawn Curry', 'Grilled Fish', 'Amritsari Kulcha'],
+    foods: [
+      { name: 'Fresh Seafood', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Lobster', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Coconut Prawn Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Grilled Fish', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Amritsari Kulcha', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Port Blair', 'India'),
   },
 
   // Chandigarh
@@ -1129,7 +1795,15 @@ export const destinations: Destination[] = [
     avgTemp: '24°C',
     highlights: ['Rock Garden', 'Sukhna Lake', 'Capitol Complex', 'Rose Garden'],
     category: 'city',
-    foods: ['Chole Bhature', 'Butter Chicken', 'Amritsari Fish', 'Lassi', 'Paneer Tikka', 'Sarson da Saag'],
+    foods: [
+      { name: 'Chole Bhature', image: 'https://images.unsplash.com/photo-1626132647523-66d5bf420d2f?w=400&q=80' },
+      { name: 'Butter Chicken', image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
+      { name: 'Amritsari Fish', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Lassi', image: 'https://images.unsplash.com/photo-1527090526205-beaac8dc3c62?w=400&q=80' },
+      { name: 'Paneer Tikka', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Sarson da Saag', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Chandigarh', 'India'),
   },
 
   // Dadra and Nagar Haveli & Daman and Diu
@@ -1144,7 +1818,15 @@ export const destinations: Destination[] = [
     avgTemp: '26°C',
     highlights: ['Diu Fort', 'Nagoa Beach', 'St. Paul\'s Church', 'Gangeshwar Temple'],
     category: 'beach',
-    foods: ['Feni', 'Prawn Curry', 'Fish Recheado', 'Bebinca', 'Patra ni Macchi', 'Dhansak'],
+    foods: [
+      { name: 'Feni', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Prawn Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Fish Recheado', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Bebinca', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Patra ni Macchi', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Dhansak', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Diu', 'India'),
   },
 
   // Delhi
@@ -1159,7 +1841,15 @@ export const destinations: Destination[] = [
     avgTemp: '25°C',
     highlights: ['Red Fort', 'Qutub Minar', 'India Gate', 'Humayun\'s Tomb'],
     category: 'city',
-    foods: ['Chole Bhature', 'Paranthe', 'Butter Chicken', 'Chaat', 'Kebabs', 'Dilli ki Jalebi'],
+    foods: [
+      { name: 'Chole Bhature', image: 'https://images.unsplash.com/photo-1626132647523-66d5bf420d2f?w=400&q=80' },
+      { name: 'Paranthe', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Butter Chicken', image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
+      { name: 'Chaat', image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80' },
+      { name: 'Kebabs', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Dilli ki Jalebi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Delhi', 'India'),
   },
 
   // Jammu & Kashmir
@@ -1174,7 +1864,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Dal Lake', 'Shikara Ride', 'Mughal Gardens', 'Shankaracharya Temple'],
     category: 'romantic',
-    foods: ['Wazwan', 'Rogan Josh', 'Gustaba', 'Yakhni', 'Kashmiri Pulao', 'Kahwa'],
+    foods: [
+      { name: 'Wazwan', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Rogan Josh', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Gustaba', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Yakhni', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Kashmiri Pulao', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Kahwa', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Srinagar', 'India'),
   },
   {
     id: 'gulmarg',
@@ -1187,7 +1885,15 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Gondola Ride', 'Skiing', 'Golf Course', 'Alpather Lake'],
     category: 'adventure',
-    foods: ['Kashmiri Wazwan', 'Harissa', 'Modur Pulao', 'Sheer Chai', 'Rista', 'Tabak Maaz'],
+    foods: [
+      { name: 'Kashmiri Wazwan', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Harissa', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Modur Pulao', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Sheer Chai', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Rista', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Tabak Maaz', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Gulmarg', 'India'),
   },
   {
     id: 'pahalgam',
@@ -1200,7 +1906,15 @@ export const destinations: Destination[] = [
     avgTemp: '12°C',
     highlights: ['Betaab Valley', 'Aru Valley', 'Lidder River', 'Chandanwari'],
     category: 'nature',
-    foods: ['Kashmiri Dum Aloo', 'Nadroo Yakhni', 'Haak Saag', 'Tchok', 'Sheekh Tujj', 'Noon Chai'],
+    foods: [
+      { name: 'Kashmiri Dum Aloo', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Nadroo Yakhni', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Haak Saag', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Tchok', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Sheekh Tujj', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80' },
+      { name: 'Noon Chai', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Pahalgam', 'India'),
   },
 
   // Ladakh
@@ -1215,7 +1929,15 @@ export const destinations: Destination[] = [
     avgTemp: '8°C',
     highlights: ['Pangong Lake', 'Nubra Valley', 'Khardung La', 'Thiksey Monastery'],
     category: 'adventure',
-    foods: ['Thukpa', 'Momos', 'Skyu', 'Chhutagi', 'Butter Tea', 'Apricot Jam'],
+    foods: [
+      { name: 'Thukpa', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Momos', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+      { name: 'Skyu', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chhutagi', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80' },
+      { name: 'Butter Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Apricot Jam', image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Leh', 'India'),
   },
 
   // Lakshadweep
@@ -1230,7 +1952,15 @@ export const destinations: Destination[] = [
     avgTemp: '28°C',
     highlights: ['Agatti Island', 'Bangaram Island', 'Snorkeling', 'Kayaking'],
     category: 'beach',
-    foods: ['Fish Curry', 'Coconut Dishes', 'Tuna Fry', 'Octopus Fry', 'Appam', 'Coconut Water'],
+    foods: [
+      { name: 'Fish Curry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Coconut Dishes', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Tuna Fry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Octopus Fry', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Appam', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Coconut Water', image: 'https://images.unsplash.com/photo-1536305442227-7aa48e47c0fc?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Lakshadweep', 'India'),
   },
 
   // Africa
@@ -1245,7 +1975,15 @@ export const destinations: Destination[] = [
     avgTemp: '20°C',
     highlights: ['Jemaa el-Fnaa', 'Majorelle Garden', 'Medina Souks', 'Atlas Mountains'],
     category: 'cultural',
-    foods: ['Tagine', 'Couscous', 'Pastilla', 'Mint Tea', 'Harira', 'Msemen'],
+    foods: [
+      { name: 'Tagine', image: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=400&q=80' },
+      { name: 'Couscous', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Pastilla', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mint Tea', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+      { name: 'Harira', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Msemen', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Marrakech', 'Morocco'),
   },
   {
     id: 'safari',
@@ -1258,7 +1996,15 @@ export const destinations: Destination[] = [
     avgTemp: '21°C',
     highlights: ['Great Migration', 'Big Five Safari', 'Balloon Safari', 'Maasai Culture'],
     category: 'adventure',
-    foods: ['Nyama Choma', 'Ugali', 'Chapati', 'Mishkaki', 'Pilau', 'Mandazi'],
+    foods: [
+      { name: 'Nyama Choma', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Ugali', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Chapati', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Mishkaki', image: 'https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=400&q=80' },
+      { name: 'Pilau', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80' },
+      { name: 'Mandazi', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Serengeti', 'Tanzania'),
   },
   {
     id: 'cape-town',
@@ -1271,7 +2017,15 @@ export const destinations: Destination[] = [
     avgTemp: '21°C',
     highlights: ['Table Mountain', 'Cape of Good Hope', 'Robben Island', 'Wine Country'],
     category: 'nature',
-    foods: ['Bobotie', 'Braai', 'Biltong', 'Bunny Chow', 'Koeksisters', 'Malva Pudding'],
+    foods: [
+      { name: 'Bobotie', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Braai', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Biltong', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Bunny Chow', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80' },
+      { name: 'Koeksisters', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Malva Pudding', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Cape Town', 'South Africa'),
   },
   {
     id: 'egypt',
@@ -1284,7 +2038,15 @@ export const destinations: Destination[] = [
     avgTemp: '22°C',
     highlights: ['Pyramids of Giza', 'Sphinx', 'Egyptian Museum', 'Nile Cruise'],
     category: 'cultural',
-    foods: ['Koshari', 'Ful Medames', 'Falafel', 'Shawarma', 'Molokhia', 'Basbousa'],
+    foods: [
+      { name: 'Koshari', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Ful Medames', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Falafel', image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&q=80' },
+      { name: 'Shawarma', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80' },
+      { name: 'Molokhia', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80' },
+      { name: 'Basbousa', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Cairo', 'Egypt'),
   },
 
   // Americas
@@ -1299,7 +2061,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Statue of Liberty', 'Central Park', 'Times Square', 'Broadway'],
     category: 'city',
-    foods: ['New York Pizza', 'Bagels with Lox', 'Hot Dogs', 'Cheesecake', 'Pastrami Sandwich', 'Cronuts'],
+    foods: [
+      { name: 'New York Pizza', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Bagels with Lox', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Hot Dogs', image: 'https://images.unsplash.com/photo-1612392062126-4a7db33c2c2e?w=400&q=80' },
+      { name: 'Cheesecake', image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&q=80' },
+      { name: 'Pastrami Sandwich', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
+      { name: 'Cronuts', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('New York City', 'USA'),
   },
   {
     id: 'machu-picchu',
@@ -1312,7 +2082,15 @@ export const destinations: Destination[] = [
     avgTemp: '14°C',
     highlights: ['Inca Trail', 'Sun Gate', 'Huayna Picchu', 'Sacred Valley'],
     category: 'adventure',
-    foods: ['Ceviche', 'Lomo Saltado', 'Cuy', 'Anticuchos', 'Pisco Sour', 'Aji de Gallina'],
+    foods: [
+      { name: 'Ceviche', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Lomo Saltado', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Cuy', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Anticuchos', image: 'https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=400&q=80' },
+      { name: 'Pisco Sour', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Aji de Gallina', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Machu Picchu', 'Peru'),
   },
   {
     id: 'rio',
@@ -1322,62 +2100,39 @@ export const destinations: Destination[] = [
     image: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=800&q=80',
     description: 'A stunning coastal city known for its beaches, Carnival, and iconic Christ the Redeemer.',
     bestTime: 'Dec - Mar',
-    avgTemp: '27°C',
+    avgTemp: '26°C',
     highlights: ['Christ the Redeemer', 'Copacabana Beach', 'Sugarloaf Mountain', 'Carnival'],
     category: 'beach',
-    foods: ['Feijoada', 'Pão de Queijo', 'Açaí Bowl', 'Coxinha', 'Churrasco', 'Caipirinha'],
+    foods: [
+      { name: 'Feijoada', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Churrasco', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Pão de Queijo', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80' },
+      { name: 'Açaí Bowl', image: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400&q=80' },
+      { name: 'Caipirinha', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+      { name: 'Brigadeiro', image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Rio de Janeiro', 'Brazil'),
   },
   {
     id: 'costa-rica',
     name: 'Costa Rica',
     country: 'Costa Rica',
     continent: 'Central America',
-    image: 'https://images.unsplash.com/photo-1518182170546-07661fd94144?w=800&q=80',
-    description: 'A biodiversity hotspot with rainforests, volcanoes, and incredible wildlife.',
+    image: 'https://images.unsplash.com/photo-1518259102261-b40117eabbc9?w=800&q=80',
+    description: 'A biodiversity hotspot with rainforests, volcanoes, and pristine beaches.',
     bestTime: 'Dec - Apr',
     avgTemp: '24°C',
-    highlights: ['Arenal Volcano', 'Cloud Forest', 'Wildlife Spotting', 'Zip-lining'],
+    highlights: ['Arenal Volcano', 'Manuel Antonio', 'Cloud Forest', 'Zip Lining'],
     category: 'adventure',
-    foods: ['Gallo Pinto', 'Casado', 'Ceviche', 'Chifrijo', 'Tres Leches', 'Patacones'],
-  },
-  {
-    id: 'cancun',
-    name: 'Cancún',
-    country: 'Mexico',
-    continent: 'North America',
-    image: 'https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=800&q=80',
-    description: 'Caribbean beaches, ancient Mayan ruins, and vibrant nightlife await.',
-    bestTime: 'Dec - Apr',
-    avgTemp: '28°C',
-    highlights: ['Chichen Itza', 'Cenotes', 'Isla Mujeres', 'Tulum Ruins'],
-    category: 'beach',
-    foods: ['Tacos al Pastor', 'Cochinita Pibil', 'Ceviche', 'Marquesitas', 'Salbutes', 'Papadzules'],
-  },
-  {
-    id: 'hawaii',
-    name: 'Hawaii',
-    country: 'USA',
-    continent: 'North America',
-    image: 'https://images.unsplash.com/photo-1507876466758-bc54f384809c?w=800&q=80',
-    description: 'Aloha! Volcanic landscapes, tropical beaches, and rich Polynesian culture.',
-    bestTime: 'Apr - Oct',
-    avgTemp: '26°C',
-    highlights: ['Waikiki Beach', 'Volcanoes National Park', 'Na Pali Coast', 'Luau'],
-    category: 'beach',
-    foods: ['Poke', 'Laulau', 'Kalua Pig', 'Shave Ice', 'Spam Musubi', 'Haupia'],
-  },
-  {
-    id: 'grand-canyon',
-    name: 'Grand Canyon',
-    country: 'USA',
-    continent: 'North America',
-    image: 'https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?w=800&q=80',
-    description: 'One of Earth\'s most awe-inspiring natural wonders carved over millions of years.',
-    bestTime: 'Mar - May, Sep - Nov',
-    avgTemp: '15°C',
-    highlights: ['South Rim', 'Hiking Trails', 'Sunrise/Sunset Views', 'River Rafting'],
-    category: 'nature',
-    foods: ['Navajo Tacos', 'BBQ Ribs', 'Arizona Cheese Crisp', 'Sonoran Hot Dog', 'Prickly Pear Cactus', 'Fry Bread'],
+    foods: [
+      { name: 'Gallo Pinto', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
+      { name: 'Casado', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+      { name: 'Ceviche', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Arroz con Pollo', image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+      { name: 'Chifrijo', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Tres Leches', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Costa Rica', 'Costa Rica'),
   },
 
   // Oceania
@@ -1387,56 +2142,61 @@ export const destinations: Destination[] = [
     country: 'Australia',
     continent: 'Oceania',
     image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
-    description: 'Iconic harbor city with stunning beaches, world-class dining, and the famous Opera House.',
+    description: 'A vibrant harbor city famous for its Opera House and stunning beaches.',
     bestTime: 'Sep - Nov, Mar - May',
     avgTemp: '18°C',
-    highlights: ['Sydney Opera House', 'Harbour Bridge', 'Bondi Beach', 'The Rocks'],
+    highlights: ['Sydney Opera House', 'Harbour Bridge', 'Bondi Beach', 'Blue Mountains'],
     category: 'city',
-    foods: ['Meat Pie', 'Barramundi', 'Lamingtons', 'Vegemite Toast', 'Pavlova', 'Tim Tams'],
+    foods: [
+      { name: 'Meat Pie', image: 'https://images.unsplash.com/photo-1609519479882-a5d3b7c3e9c0?w=400&q=80' },
+      { name: 'Fish and Chips', image: 'https://images.unsplash.com/photo-1579208030886-b937da0925dc?w=400&q=80' },
+      { name: 'Barramundi', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Lamington', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+      { name: 'Pavlova', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Flat White', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Sydney', 'Australia'),
   },
   {
-    id: 'queenstown',
+    id: 'new-zealand',
     name: 'Queenstown',
     country: 'New Zealand',
     continent: 'Oceania',
     image: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800&q=80',
-    description: 'Adventure capital of the world set against a backdrop of dramatic mountains and lakes.',
+    description: 'The adventure capital of the world, set against dramatic mountain scenery.',
     bestTime: 'Dec - Feb, Jun - Aug',
     avgTemp: '12°C',
-    highlights: ['Bungee Jumping', 'Milford Sound', 'Skiing', 'Wine Tours'],
+    highlights: ['Bungee Jumping', 'Milford Sound', 'Skiing', 'Lord of the Rings Tours'],
     category: 'adventure',
-    foods: ['Fergburger', 'Lamb Shank', 'Green-lipped Mussels', 'Hangi', 'Hokey Pokey Ice Cream', 'Meat Pie'],
-  },
-  {
-    id: 'great-barrier',
-    name: 'Great Barrier Reef',
-    country: 'Australia',
-    continent: 'Oceania',
-    image: 'https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&q=80',
-    description: 'The world\'s largest coral reef system, home to incredible marine biodiversity.',
-    bestTime: 'Jun - Oct',
-    avgTemp: '25°C',
-    highlights: ['Snorkeling', 'Scuba Diving', 'Whitsunday Islands', 'Marine Life'],
-    category: 'nature',
-    foods: ['Fresh Seafood', 'Mud Crab', 'Barramundi', 'Prawns', 'Oysters', 'Fish and Chips'],
+    foods: [
+      { name: 'Lamb Roast', image: 'https://images.unsplash.com/photo-1606755456206-b25206cde27e?w=400&q=80' },
+      { name: 'Green-lipped Mussels', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Hangi', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Pavlova', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+      { name: 'Fergburger', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
+      { name: 'Hokey Pokey Ice Cream', image: 'https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Queenstown', 'New Zealand'),
   },
   {
     id: 'fiji',
-    name: 'Fiji',
+    name: 'Fiji Islands',
     country: 'Fiji',
     continent: 'Oceania',
-    image: 'https://images.unsplash.com/photo-1589979481223-deb893043163?w=800&q=80',
-    description: 'A tropical paradise of over 300 islands with crystal waters and warm Fijian hospitality.',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+    description: 'A tropical paradise of over 300 islands with crystal-clear waters and friendly locals.',
     bestTime: 'May - Oct',
-    avgTemp: '27°C',
-    highlights: ['Island Hopping', 'Snorkeling', 'Traditional Kava', 'Beach Resorts'],
+    avgTemp: '26°C',
+    highlights: ['Island Hopping', 'Snorkeling', 'Traditional Kava Ceremony', 'Cloud 9'],
     category: 'beach',
-    foods: ['Kokoda', 'Lovo', 'Rourou', 'Cassava', 'Kava', 'Coconut Cream Fish'],
+    foods: [
+      { name: 'Kokoda', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Lovo', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80' },
+      { name: 'Cassava', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+      { name: 'Fresh Tropical Fruit', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80' },
+      { name: 'Coconut Crab', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+      { name: 'Kava', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80' },
+    ],
+    bookingLinks: generateBookingLinks('Fiji Islands', 'Fiji'),
   },
 ];
-
-export const continents = ['All', 'Europe', 'Asia', 'Africa', 'North America', 'South America', 'Central America', 'Oceania'] as const;
-export const categories = ['All', 'beach', 'city', 'nature', 'adventure', 'cultural', 'romantic'] as const;
-
-export type Category = typeof categories[number];
-export type Continent = typeof continents[number];
