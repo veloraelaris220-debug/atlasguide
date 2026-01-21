@@ -1,12 +1,16 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { Map, Grid3X3 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { DestinationCard } from '@/components/DestinationCard';
 import { DestinationFilters } from '@/components/DestinationFilters';
 import { ItineraryCalendar } from '@/components/ItineraryCalendar';
 import { DestinationModal } from '@/components/DestinationModal';
+import { DestinationMap } from '@/components/DestinationMap';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
+
+type ViewMode = 'grid' | 'map';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,6 +18,7 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([]);
   const [viewingDestination, setViewingDestination] = useState<Destination | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const filteredDestinations = useMemo(() => {
     return destinations.filter((dest) => {
@@ -66,17 +71,45 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-8"
+            className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Explore Destinations
-            </h2>
-            <p className="text-muted-foreground">
-              {filteredDestinations.length} destination{filteredDestinations.length !== 1 ? 's' : ''} available
-              {selectedDestinations.length > 0 && (
-                <span className="text-primary"> • {selectedDestinations.length} selected</span>
-              )}
-            </p>
+            <div>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+                Explore Destinations
+              </h2>
+              <p className="text-muted-foreground">
+                {filteredDestinations.length} destination{filteredDestinations.length !== 1 ? 's' : ''} available
+                {selectedDestinations.length > 0 && (
+                  <span className="text-primary"> • {selectedDestinations.length} selected</span>
+                )}
+              </p>
+            </div>
+            
+            {/* View Toggle */}
+            <div className="flex items-center gap-2 p-1 bg-muted rounded-xl">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  viewMode === 'grid' 
+                    ? 'bg-background text-foreground shadow-sm' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Grid3X3 className="w-4 h-4" />
+                Grid
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  viewMode === 'map' 
+                    ? 'bg-background text-foreground shadow-sm' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Map className="w-4 h-4" />
+                Map
+              </button>
+            </div>
           </motion.div>
 
           <DestinationFilters
@@ -88,18 +121,33 @@ const Index = () => {
             onCategoryChange={setSelectedCategory}
           />
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredDestinations.map((destination, index) => (
-              <DestinationCard
-                key={destination.id}
-                destination={destination}
-                isSelected={selectedDestinations.some((d) => d.id === destination.id)}
-                onSelect={handleSelectDestination}
+          {/* Map View */}
+          {viewMode === 'map' && (
+            <div className="mt-8">
+              <DestinationMap
+                destinations={filteredDestinations}
+                onSelectDestination={handleSelectDestination}
+                selectedDestinations={selectedDestinations}
                 onViewDetails={handleViewDetails}
-                index={index}
               />
-            ))}
-          </div>
+            </div>
+          )}
+
+          {/* Grid View */}
+          {viewMode === 'grid' && (
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredDestinations.map((destination, index) => (
+                <DestinationCard
+                  key={destination.id}
+                  destination={destination}
+                  isSelected={selectedDestinations.some((d) => d.id === destination.id)}
+                  onSelect={handleSelectDestination}
+                  onViewDetails={handleViewDetails}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
 
           {filteredDestinations.length === 0 && (
             <motion.div
