@@ -1,59 +1,7 @@
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import { useEffect, useState } from 'react';
 import { Destination } from '@/data/destinations';
 import { MapPin, Calendar, Thermometer } from 'lucide-react';
 import { motion } from 'framer-motion';
-import 'leaflet/dist/leaflet.css';
-
-// Fix for default marker icons in React-Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
-
-// Custom colored markers based on category
-const createCustomIcon = (category: string) => {
-  const colors: Record<string, string> = {
-    beach: '#0ea5e9',
-    city: '#8b5cf6',
-    nature: '#22c55e',
-    adventure: '#f97316',
-    cultural: '#ec4899',
-    romantic: '#f43f5e',
-  };
-  
-  const color = colors[category] || '#6366f1';
-  
-  return L.divIcon({
-    className: 'custom-marker',
-    html: `
-      <div style="
-        background: ${color};
-        width: 32px;
-        height: 32px;
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        border: 3px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      ">
-        <div style="
-          transform: rotate(45deg);
-          color: white;
-          font-size: 14px;
-        ">📍</div>
-      </div>
-    `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  });
-};
 
 // Coordinates mapping for destinations
 export const destinationCoordinates: Record<string, [number, number]> = {
@@ -128,107 +76,192 @@ interface DestinationMapProps {
   onViewDetails: (destination: Destination) => void;
 }
 
-function MapController({ destinations }: { destinations: Destination[] }) {
-  const map = useMap();
-  
-  useEffect(() => {
-    if (destinations.length > 0) {
-      const bounds = L.latLngBounds(
-        destinations
-          .filter(d => destinationCoordinates[d.id])
-          .map(d => destinationCoordinates[d.id])
-      );
-      if (bounds.isValid()) {
-        map.fitBounds(bounds, { padding: [50, 50] });
-      }
-    }
-  }, [destinations, map]);
-  
-  return null;
-}
-
-export function DestinationMap({ 
+// Lazy load the actual map component
+function LazyMapContent({ 
   destinations, 
   onSelectDestination, 
   selectedDestinations,
   onViewDetails 
 }: DestinationMapProps) {
+  const [MapComponents, setMapComponents] = useState<any>(null);
+  const [L, setL] = useState<any>(null);
+
+  useEffect(() => {
+    // Dynamically import Leaflet and react-leaflet
+    Promise.all([
+      import('react-leaflet'),
+      import('leaflet')
+    ]).then(([reactLeaflet, leaflet]) => {
+      // Fix default marker icons
+      delete (leaflet.default.Icon.Default.prototype as any)._getIconUrl;
+      leaflet.default.Icon.Default.mergeOptions({
+        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      });
+      
+      setMapComponents(reactLeaflet);
+      setL(leaflet.default);
+    });
+  }, []);
+
+  if (!MapComponents || !L) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-muted rounded-2xl">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading map...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { MapContainer, TileLayer, Marker, Popup, useMap } = MapComponents;
+
+  // Custom colored markers based on category
+  const createCustomIcon = (category: string) => {
+    const colors: Record<string, string> = {
+      beach: '#0ea5e9',
+      city: '#8b5cf6',
+      nature: '#22c55e',
+      adventure: '#f97316',
+      cultural: '#ec4899',
+      romantic: '#f43f5e',
+    };
+    
+    const color = colors[category] || '#6366f1';
+    
+    return L.divIcon({
+      className: 'custom-marker',
+      html: `
+        <div style="
+          background: ${color};
+          width: 32px;
+          height: 32px;
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          border: 3px solid white;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <div style="
+            transform: rotate(45deg);
+            color: white;
+            font-size: 14px;
+          ">📍</div>
+        </div>
+      `,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
+    });
+  };
+
+  function MapController({ destinations: dests }: { destinations: Destination[] }) {
+    const map = useMap();
+    
+    useEffect(() => {
+      if (dests.length > 0) {
+        const validCoords = dests
+          .filter(d => destinationCoordinates[d.id])
+          .map(d => destinationCoordinates[d.id]);
+        
+        if (validCoords.length > 0) {
+          const bounds = L.latLngBounds(validCoords);
+          if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+          }
+        }
+      }
+    }, [dests, map]);
+    
+    return null;
+  }
+
+  return (
+    <MapContainer
+      center={[20, 0]}
+      zoom={2}
+      style={{ height: '100%', width: '100%' }}
+      className="z-0 rounded-2xl"
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <MapController destinations={destinations} />
+      
+      {destinations.map((destination) => {
+        const coords = destinationCoordinates[destination.id];
+        if (!coords) return null;
+        
+        const isSelected = selectedDestinations.some(d => d.id === destination.id);
+        
+        return (
+          <Marker
+            key={destination.id}
+            position={coords}
+            icon={createCustomIcon(destination.category)}
+          >
+            <Popup className="destination-popup">
+              <div className="p-1 min-w-[200px]">
+                <img 
+                  src={destination.image} 
+                  alt={destination.name}
+                  className="w-full h-24 object-cover rounded-lg mb-2"
+                />
+                <h3 className="font-bold text-lg">{destination.name}</h3>
+                <div className="flex items-center gap-1 text-sm text-gray-600 mb-2">
+                  <MapPin className="w-3 h-3" />
+                  <span>{destination.country}</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    {destination.bestTime}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Thermometer className="w-3 h-3" />
+                    {destination.avgTemp}
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => onViewDetails(destination)}
+                    className="flex-1 px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    onClick={() => onSelectDestination(destination)}
+                    className={`flex-1 px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      isSelected 
+                        ? 'bg-green-500 text-white' 
+                        : 'bg-secondary text-foreground hover:bg-secondary/80'
+                    }`}
+                  >
+                    {isSelected ? '✓ Added' : '+ Add'}
+                  </button>
+                </div>
+              </div>
+            </Popup>
+          </Marker>
+        );
+      })}
+    </MapContainer>
+  );
+}
+
+export function DestinationMap(props: DestinationMapProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="relative w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden border border-border shadow-elevated"
     >
-      <MapContainer
-        center={[20, 0]}
-        zoom={2}
-        style={{ height: '100%', width: '100%' }}
-        className="z-0"
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MapController destinations={destinations} />
-        
-        {destinations.map((destination) => {
-          const coords = destinationCoordinates[destination.id];
-          if (!coords) return null;
-          
-          const isSelected = selectedDestinations.some(d => d.id === destination.id);
-          
-          return (
-            <Marker
-              key={destination.id}
-              position={coords}
-              icon={createCustomIcon(destination.category)}
-            >
-              <Popup className="destination-popup">
-                <div className="p-1 min-w-[200px]">
-                  <img 
-                    src={destination.image} 
-                    alt={destination.name}
-                    className="w-full h-24 object-cover rounded-lg mb-2"
-                  />
-                  <h3 className="font-bold text-lg">{destination.name}</h3>
-                  <div className="flex items-center gap-1 text-sm text-gray-600 mb-2">
-                    <MapPin className="w-3 h-3" />
-                    <span>{destination.country}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {destination.bestTime}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Thermometer className="w-3 h-3" />
-                      {destination.avgTemp}
-                    </span>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => onViewDetails(destination)}
-                      className="flex-1 px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-                    >
-                      View Details
-                    </button>
-                    <button
-                      onClick={() => onSelectDestination(destination)}
-                      className={`flex-1 px-3 py-1.5 text-xs rounded-lg transition-colors ${
-                        isSelected 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-secondary text-foreground hover:bg-secondary/80'
-                      }`}
-                    >
-                      {isSelected ? '✓ Added' : '+ Add'}
-                    </button>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
+      <LazyMapContent {...props} />
       
       {/* Map Legend */}
       <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-border z-[1000]">
