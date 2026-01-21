@@ -10,6 +10,12 @@ export interface BookingLinks {
   flight: string;
 }
 
+export type Category = 'All' | 'beach' | 'city' | 'nature' | 'adventure' | 'cultural' | 'romantic';
+export type Continent = 'All' | 'Europe' | 'Asia' | 'Africa' | 'North America' | 'South America' | 'Oceania';
+
+export const categories: Category[] = ['All', 'beach', 'city', 'nature', 'adventure', 'cultural', 'romantic'];
+export const continents: Continent[] = ['All', 'Europe', 'Asia', 'Africa', 'North America', 'South America', 'Oceania'];
+
 export interface Destination {
   id: string;
   name: string;

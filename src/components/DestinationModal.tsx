@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Calendar, Thermometer, Star, Clock, Camera, ChevronLeft, ChevronRight, Plus, Check, UtensilsCrossed } from 'lucide-react';
-import { Destination } from '@/data/destinations';
+import { X, MapPin, Calendar, Thermometer, Star, Clock, Camera, ChevronLeft, ChevronRight, Plus, Check, UtensilsCrossed, Train, Building2, Bus, Plane } from 'lucide-react';
+import { Destination, FoodItem } from '@/data/destinations';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -236,19 +236,80 @@ export function DestinationModal({ destination, isOpen, onClose, isSelected, onS
                 <UtensilsCrossed className="w-5 h-5 text-sunset" />
                 Best Foods to Try
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {destination.foods.map((food, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {destination.foods.map((food: FoodItem, index: number) => (
                   <motion.div
-                    key={food}
+                    key={food.name}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-sunset-light/50 to-transparent border border-sunset/10"
+                    className="group relative overflow-hidden rounded-xl border border-sunset/10 bg-gradient-to-b from-sunset-light/30 to-transparent"
                   >
-                    <span className="text-lg">🍽️</span>
-                    <span className="text-sm font-medium">{food}</span>
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={food.image} 
+                        alt={food.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <span className="text-sm font-medium text-white">{food.name}</span>
+                    </div>
                   </motion.div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Booking Links */}
+          {destination.bookingLinks && (
+            <div className="mb-8">
+              <h3 className="font-display text-xl font-semibold mb-4 flex items-center gap-2">
+                <Plane className="w-5 h-5 text-primary" />
+                Book Your Travel
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {destination.bookingLinks.train && (
+                  <a
+                    href={destination.bookingLinks.train}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
+                  >
+                    <Train className="w-5 h-5 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-700">Train</span>
+                  </a>
+                )}
+                <a
+                  href={destination.bookingLinks.hotel}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors"
+                >
+                  <Building2 className="w-5 h-5 text-purple-600" />
+                  <span className="text-sm font-medium text-purple-700">Hotel</span>
+                </a>
+                {destination.bookingLinks.bus && (
+                  <a
+                    href={destination.bookingLinks.bus}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200 hover:bg-green-100 transition-colors"
+                  >
+                    <Bus className="w-5 h-5 text-green-600" />
+                    <span className="text-sm font-medium text-green-700">Bus</span>
+                  </a>
+                )}
+                <a
+                  href={destination.bookingLinks.flight}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors"
+                >
+                  <Plane className="w-5 h-5 text-orange-600" />
+                  <span className="text-sm font-medium text-orange-700">Flight</span>
+                </a>
               </div>
             </div>
           )}
