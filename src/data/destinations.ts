@@ -37,10 +37,10 @@ const generateBookingLinks = (destination: string, country: string): BookingLink
   const isIndia = country === 'India';
   
   return {
-    train: isIndia ? `https://www.irctc.co.in/nget/train-search?destination=${encodedDest}` : undefined,
-    hotel: `https://www.booking.com/searchresults.html?ss=${encodedDest}`,
+    train: `https://www.ixigo.com/search/result/train/-/${encodedDest}`,
+    hotel: `https://www.makemytrip.com/hotels/hotel-listing/?city=${encodedDest}`,
     bus: isIndia ? `https://www.redbus.in/search?dst=${encodedDest}` : `https://www.busbud.com/search?dst=${encodedDest}`,
-    flight: `https://www.skyscanner.com/transport/flights/anywhere/${encodedDest.toLowerCase().replace(/\s+/g, '-')}/`,
+    flight: `https://www.ixigo.com/search/result/flight/-/${encodedDest}`,
   };
 };
 
