@@ -84,8 +84,10 @@ function LazyMapContent({
   onViewDetails 
 }: DestinationMapProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mapModule, setMapModule] = useState<typeof import('react-leaflet') | null>(null);
-  const [leafletModule, setLeafletModule] = useState<typeof import('leaflet') | null>(null);
+  // Use `any` here because Vite interop for dynamic imports can put exports under `.default`
+  // depending on whether the dependency is treated as ESM/CJS.
+  const [mapModule, setMapModule] = useState<any>(null);
+  const [leafletModule, setLeafletModule] = useState<any>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -97,8 +99,9 @@ function LazyMapContent({
     ]).then(([reactLeafletMod, leafletMod]) => {
       if (!mounted) return;
       
-      // leaflet module exports directly, not via .default
-      const L = leafletMod as typeof import('leaflet');
+      // Be resilient to ESM/CJS interop: sometimes exports land under `.default`.
+      const reactLeaflet = (reactLeafletMod as any).default ?? reactLeafletMod;
+      const L = (leafletMod as any).default ?? leafletMod;
       
       // Fix default marker icons
       delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -108,7 +111,7 @@ function LazyMapContent({
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
       });
       
-      setMapModule(reactLeafletMod);
+      setMapModule(reactLeaflet);
       setLeafletModule(L);
       setIsLoaded(true);
     }).catch(console.error);
@@ -129,6 +132,20 @@ function LazyMapContent({
 
   const { MapContainer, TileLayer, Marker, Popup, useMap } = mapModule;
   const L = leafletModule;
+
+  // If interop ever returns an unexpected shape, avoid crashing the whole app.
+  if (!MapContainer || !TileLayer || !Marker || !Popup || !useMap || !L?.divIcon) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-muted rounded-2xl">
+        <div className="text-center max-w-sm px-6">
+          <p className="text-sm font-medium text-foreground">Map failed to initialize</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Please refresh the page. If it persists, switch back to Grid view.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Custom colored markers based on category
   const createCustomIcon = (category: string) => {
