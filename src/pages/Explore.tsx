@@ -7,7 +7,7 @@ import { DestinationCard } from '@/components/DestinationCard';
 import { DestinationFilters } from '@/components/DestinationFilters';
 import { ItineraryCalendar } from '@/components/ItineraryCalendar';
 import { DestinationModal } from '@/components/DestinationModal';
-import { DestinationMap } from '@/components/DestinationMap';
+import { DestinationMapStable } from '@/components/DestinationMapStable';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 type ViewMode = 'grid' | 'map';
@@ -148,7 +148,7 @@ const Explore = () => {
           {/* Map View */}
           {viewMode === 'map' && (
             <div className="mt-8">
-              <DestinationMap
+              <DestinationMapStable
                 destinations={filteredDestinations}
                 onSelectDestination={handleSelectDestination}
                 selectedDestinations={selectedDestinations}
