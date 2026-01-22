@@ -83,29 +83,40 @@ function LazyMapContent({
   selectedDestinations,
   onViewDetails 
 }: DestinationMapProps) {
-  const [MapComponents, setMapComponents] = useState<any>(null);
-  const [L, setL] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [mapModule, setMapModule] = useState<typeof import('react-leaflet') | null>(null);
+  const [leafletModule, setLeafletModule] = useState<typeof import('leaflet') | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+    
     // Dynamically import Leaflet and react-leaflet
     Promise.all([
       import('react-leaflet'),
       import('leaflet')
-    ]).then(([reactLeaflet, leaflet]) => {
+    ]).then(([reactLeafletMod, leafletMod]) => {
+      if (!mounted) return;
+      
+      // leaflet module exports directly, not via .default
+      const L = leafletMod as typeof import('leaflet');
+      
       // Fix default marker icons
-      delete (leaflet.default.Icon.Default.prototype as any)._getIconUrl;
-      leaflet.default.Icon.Default.mergeOptions({
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
         iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
       });
       
-      setMapComponents(reactLeaflet);
-      setL(leaflet.default);
-    });
+      setMapModule(reactLeafletMod);
+      setLeafletModule(L);
+      setIsLoaded(true);
+    }).catch(console.error);
+    
+    return () => { mounted = false; };
   }, []);
 
-  if (!MapComponents || !L) {
+  if (!isLoaded || !mapModule || !leafletModule) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-muted rounded-2xl">
         <div className="text-center">
@@ -116,7 +127,8 @@ function LazyMapContent({
     );
   }
 
-  const { MapContainer, TileLayer, Marker, Popup, useMap } = MapComponents;
+  const { MapContainer, TileLayer, Marker, Popup, useMap } = mapModule;
+  const L = leafletModule;
 
   // Custom colored markers based on category
   const createCustomIcon = (category: string) => {
