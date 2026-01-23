@@ -9,6 +9,7 @@ import { ItineraryCalendar } from '@/components/ItineraryCalendar';
 import { DestinationModal } from '@/components/DestinationModal';
 import { DestinationMapStable } from '@/components/DestinationMapStable';
 import { SelectedDestinationsBar } from '@/components/SelectedDestinationsBar';
+import { TravelGuideChat } from '@/components/TravelGuideChat';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 type ViewMode = 'grid' | 'map';
@@ -256,6 +257,9 @@ const Explore = () => {
         isSelected={viewingDestination ? selectedDestinations.some((d) => d.id === viewingDestination.id) : false}
         onSelect={handleSelectDestination}
       />
+
+      {/* Travel Guide AI Chat */}
+      <TravelGuideChat />
 
       {/* Footer */}
       <footer className={`border-t border-border py-8 ${selectedDestinations.length > 0 ? 'pb-24' : ''}`}>
