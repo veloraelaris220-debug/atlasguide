@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Map, Grid3X3, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Map, Grid3X3, ArrowLeft, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { DestinationCard } from '@/components/DestinationCard';
@@ -8,6 +8,7 @@ import { DestinationFilters } from '@/components/DestinationFilters';
 import { ItineraryCalendar } from '@/components/ItineraryCalendar';
 import { DestinationModal } from '@/components/DestinationModal';
 import { DestinationMapStable } from '@/components/DestinationMapStable';
+import { SelectedDestinationsBar } from '@/components/SelectedDestinationsBar';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 type ViewMode = 'grid' | 'map';
@@ -59,6 +60,10 @@ const Explore = () => {
     setViewingDestination(null);
   };
 
+  const scrollToItinerary = () => {
+    document.getElementById('itinerary')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -73,21 +78,36 @@ const Explore = () => {
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-display text-4xl md:text-5xl font-bold text-foreground"
-          >
-            Explore Destinations
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-muted-foreground mt-2 text-lg"
-          >
-            Discover amazing places and plan your perfect journey
-          </motion.p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="font-display text-4xl md:text-5xl font-bold text-foreground"
+              >
+                Explore Destinations
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-muted-foreground mt-2 text-lg"
+              >
+                Discover amazing places and plan your perfect journey
+              </motion.p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {destinations.length} destinations to explore
+              </span>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -219,6 +239,15 @@ const Explore = () => {
         </section>
       </main>
 
+      {/* Selected Destinations Bottom Bar */}
+      <AnimatePresence>
+        <SelectedDestinationsBar
+          selectedDestinations={selectedDestinations}
+          onRemove={handleRemoveDestination}
+          onPlanClick={scrollToItinerary}
+        />
+      </AnimatePresence>
+
       {/* Destination Detail Modal */}
       <DestinationModal
         destination={viewingDestination}
@@ -229,7 +258,7 @@ const Explore = () => {
       />
 
       {/* Footer */}
-      <footer className="border-t border-border py-8">
+      <footer className={`border-t border-border py-8 ${selectedDestinations.length > 0 ? 'pb-24' : ''}`}>
         <div className="container text-center text-sm text-muted-foreground">
           <p>© 2024 Wanderlust. Crafted with ❤️ for travelers worldwide.</p>
         </div>

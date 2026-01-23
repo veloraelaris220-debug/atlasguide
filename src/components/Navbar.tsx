@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Compass, Menu, X } from 'lucide-react';
+import { Compass, Menu, X, MapPin } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,14 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isExplore = location.pathname === '/explore';
+
+  const handleStartPlanning = () => {
+    if (isExplore) {
+      // Scroll to itinerary section when already on explore
+      document.getElementById('itinerary')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <nav className={cn(
@@ -67,11 +75,23 @@ export function Navbar() {
                 Features
               </a>
             )}
-            <Link to="/explore">
-              <Button variant="default" size="sm" className="gradient-hero border-0">
-                Start Planning
+            {isExplore ? (
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="gradient-hero border-0 gap-2"
+                onClick={handleStartPlanning}
+              >
+                <MapPin className="w-4 h-4" />
+                Plan Itinerary
               </Button>
-            </Link>
+            ) : (
+              <Link to="/explore">
+                <Button variant="default" size="sm" className="gradient-hero border-0">
+                  Start Planning
+                </Button>
+              </Link>
+            )}
           </motion.div>
 
           {/* Mobile menu button */}
@@ -115,11 +135,26 @@ export function Navbar() {
                 Features
               </a>
             )}
-            <Link to="/explore" onClick={() => setIsOpen(false)}>
-              <Button variant="default" size="sm" className="w-full gradient-hero border-0">
-                Start Planning
+            {isExplore ? (
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="w-full gradient-hero border-0 gap-2"
+                onClick={() => {
+                  handleStartPlanning();
+                  setIsOpen(false);
+                }}
+              >
+                <MapPin className="w-4 h-4" />
+                Plan Itinerary
               </Button>
-            </Link>
+            ) : (
+              <Link to="/explore" onClick={() => setIsOpen(false)}>
+                <Button variant="default" size="sm" className="w-full gradient-hero border-0">
+                  Start Planning
+                </Button>
+              </Link>
+            )}
           </div>
         </motion.div>
       </div>
