@@ -3,8 +3,10 @@ import { AnimatePresence } from 'framer-motion';
 import Index from '@/pages/Index';
 import Explore from '@/pages/Explore';
 import Chat from '@/pages/Chat';
+import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
 import { PageTransition } from './PageTransition';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -29,10 +31,20 @@ export function AnimatedRoutes() {
           }
         />
         <Route
+          path="/auth"
+          element={
+            <PageTransition>
+              <Auth />
+            </PageTransition>
+          }
+        />
+        <Route
           path="/chat"
           element={
             <PageTransition>
-              <Chat />
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
             </PageTransition>
           }
         />
