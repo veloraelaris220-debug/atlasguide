@@ -9,7 +9,7 @@ import { ItineraryCalendar } from '@/components/ItineraryCalendar';
 import { DestinationModal } from '@/components/DestinationModal';
 import { DestinationMapStable } from '@/components/DestinationMapStable';
 import { SelectedDestinationsBar } from '@/components/SelectedDestinationsBar';
-import { TravelGuideChat } from '@/components/TravelGuideChat';
+import { FloatingChatButton } from '@/components/FloatingChatButton';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 type ViewMode = 'grid' | 'map';
@@ -258,8 +258,8 @@ const Explore = () => {
         onSelect={handleSelectDestination}
       />
 
-      {/* Travel Guide AI Chat */}
-      <TravelGuideChat />
+      {/* Travel Guide AI Chat Button */}
+      <FloatingChatButton />
 
       {/* Footer */}
       <footer className={`border-t border-border py-8 ${selectedDestinations.length > 0 ? 'pb-24' : ''}`}>
