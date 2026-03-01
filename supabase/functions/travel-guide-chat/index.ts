@@ -1,66 +1,24 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.91.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Simple in-memory rate limiter per IP
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
-const RATE_LIMIT_MAX = 10; // max requests per window
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-
-  entry.count++;
-  if (entry.count > RATE_LIMIT_MAX) {
-    return true;
-  }
-  return false;
-}
-
-// Cleanup old entries periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, val] of rateLimitMap) {
-    if (now > val.resetAt) rateLimitMap.delete(key);
-  }
-}, 60_000);
-
 const MAX_MESSAGES = 50;
 const MAX_MESSAGE_LENGTH = 5000;
 const VALID_ROLES = new Set(["user", "assistant"]);
 
 function validateMessages(messages: unknown): string | null {
-  if (!messages || !Array.isArray(messages)) {
-    return "Invalid request: messages must be an array";
-  }
-  if (messages.length === 0) {
-    return "Invalid request: messages cannot be empty";
-  }
-  if (messages.length > MAX_MESSAGES) {
-    return `Too many messages: limit is ${MAX_MESSAGES}`;
-  }
+  if (!messages || !Array.isArray(messages)) return "Invalid request: messages must be an array";
+  if (messages.length === 0) return "Invalid request: messages cannot be empty";
+  if (messages.length > MAX_MESSAGES) return `Too many messages: limit is ${MAX_MESSAGES}`;
   for (const msg of messages) {
-    if (!msg || typeof msg !== "object") {
-      return "Invalid message format";
-    }
-    if (typeof msg.role !== "string" || !VALID_ROLES.has(msg.role)) {
-      return "Invalid message role: must be 'user' or 'assistant'";
-    }
-    if (typeof msg.content !== "string" || msg.content.trim().length === 0) {
-      return "Invalid message content: must be a non-empty string";
-    }
-    if (msg.content.length > MAX_MESSAGE_LENGTH) {
-      return `Message too long: limit is ${MAX_MESSAGE_LENGTH} characters`;
-    }
+    if (!msg || typeof msg !== "object") return "Invalid message format";
+    if (typeof msg.role !== "string" || !VALID_ROLES.has(msg.role)) return "Invalid message role";
+    if (typeof msg.content !== "string" || msg.content.trim().length === 0) return "Invalid message content";
+    if (msg.content.length > MAX_MESSAGE_LENGTH) return `Message too long: limit is ${MAX_MESSAGE_LENGTH} characters`;
   }
   return null;
 }
@@ -71,21 +29,33 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limiting by IP
-    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("cf-connecting-ip") || "unknown";
-
-    if (isRateLimited(clientIp)) {
+    // JWT Authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
       return new Response(
-        JSON.stringify({ error: "Too many requests. Please wait a moment and try again." }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     const body = await req.json();
     const { messages } = body;
 
-    // Validate input
     const validationError = validateMessages(messages);
     if (validationError) {
       return new Response(
@@ -95,7 +65,6 @@ serve(async (req) => {
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
@@ -144,8 +113,7 @@ Remember: You're here to make travel planning exciting and stress-free!`;
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
+      console.error("AI gateway error:", response.status);
       return new Response(
         JSON.stringify({ error: "Failed to get AI response" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
