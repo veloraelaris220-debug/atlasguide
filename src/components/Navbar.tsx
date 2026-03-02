@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Compass, Menu, X, MapPin } from 'lucide-react';
+import { Compass, Menu, X, MapPin, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -70,6 +70,18 @@ export function Navbar() {
             >
               Explore
             </Link>
+            <Link 
+              to="/wishlists" 
+              className={cn(
+                "text-sm font-medium transition-colors flex items-center gap-1",
+                location.pathname === '/wishlists' 
+                  ? "text-foreground" 
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Heart className="w-3.5 h-3.5" />
+              Wishlist
+            </Link>
             {isHome && (
               <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 Features
@@ -125,6 +137,13 @@ export function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               Explore
+            </Link>
+            <Link 
+              to="/wishlists" 
+              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              ❤️ Wishlist
             </Link>
             {isHome && (
               <a 

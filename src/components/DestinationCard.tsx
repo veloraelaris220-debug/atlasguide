@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Thermometer, Plus, Check, Eye } from 'lucide-react';
+import { MapPin, Calendar, Thermometer, Plus, Check, Eye, Heart } from 'lucide-react';
 import { Destination } from '@/data/destinations';
 import { cn } from '@/lib/utils';
 
@@ -9,6 +9,8 @@ interface DestinationCardProps {
   onSelect: (destination: Destination) => void;
   onViewDetails: (destination: Destination) => void;
   index: number;
+  isWishlisted?: boolean;
+  onToggleWishlist?: (destinationId: string) => void;
 }
 
 const categoryColors: Record<string, string> = {
@@ -20,7 +22,7 @@ const categoryColors: Record<string, string> = {
   romantic: 'bg-pink-100 text-pink-600',
 };
 
-export function DestinationCard({ destination, isSelected, onSelect, onViewDetails, index }: DestinationCardProps) {
+export function DestinationCard({ destination, isSelected, onSelect, onViewDetails, index, isWishlisted, onToggleWishlist }: DestinationCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -48,6 +50,24 @@ export function DestinationCard({ destination, isSelected, onSelect, onViewDetai
         )}>
           {destination.category}
         </span>
+
+        {/* Wishlist heart button */}
+        {onToggleWishlist && (
+          <button
+            className={cn(
+              "absolute top-3 right-12 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
+              isWishlisted
+                ? "bg-red-500 text-white"
+                : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/40"
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleWishlist(destination.id);
+            }}
+          >
+            <Heart className={cn("w-4 h-4", isWishlisted && "fill-current")} />
+          </button>
+        )}
 
         {/* Selection indicator */}
         <button
