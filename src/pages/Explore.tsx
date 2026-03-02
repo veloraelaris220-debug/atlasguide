@@ -10,6 +10,7 @@ import { DestinationModal } from '@/components/DestinationModal';
 import { DestinationMapStable } from '@/components/DestinationMapStable';
 import { SelectedDestinationsBar } from '@/components/SelectedDestinationsBar';
 import { FloatingChatButton } from '@/components/FloatingChatButton';
+import { useWishlist } from '@/hooks/useWishlist';
 import { destinations, Destination, Category, Continent } from '@/data/destinations';
 
 type ViewMode = 'grid' | 'map';
@@ -21,6 +22,7 @@ const Explore = () => {
   const [selectedDestinations, setSelectedDestinations] = useState<Destination[]>([]);
   const [viewingDestination, setViewingDestination] = useState<Destination | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const { isWishlisted, toggleWishlist } = useWishlist();
 
   const filteredDestinations = useMemo(() => {
     return destinations.filter((dest) => {
@@ -189,6 +191,8 @@ const Explore = () => {
                   onSelect={handleSelectDestination}
                   onViewDetails={handleViewDetails}
                   index={index}
+                  isWishlisted={isWishlisted(destination.id)}
+                  onToggleWishlist={toggleWishlist}
                 />
               ))}
             </div>

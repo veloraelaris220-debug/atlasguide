@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Index from '@/pages/Index';
 import Explore from '@/pages/Explore';
+import Wishlists from '@/pages/Wishlists';
 import Chat from '@/pages/Chat';
 import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
@@ -27,6 +28,14 @@ export function AnimatedRoutes() {
           element={
             <PageTransition>
               <Explore />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/wishlists"
+          element={
+            <PageTransition>
+              <Wishlists />
             </PageTransition>
           }
         />
