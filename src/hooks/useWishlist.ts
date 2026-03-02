@@ -48,49 +48,52 @@ export function useWishlist() {
       return;
     }
 
-    const isWishlisted = wishlistedIds.has(destinationId);
+    try {
+      const isWishlisted = wishlistedIds.has(destinationId);
 
-    // Optimistic update
-    setWishlistedIds((prev) => {
-      const next = new Set(prev);
-      if (isWishlisted) {
-        next.delete(destinationId);
-      } else {
-        next.add(destinationId);
-      }
-      return next;
-    });
-
-    if (isWishlisted) {
-      const { error } = await supabase
-        .from('wishlists')
-        .delete()
-        .eq('user_id', userId)
-        .eq('destination_id', destinationId);
-
-      if (error) {
-        // Revert
-        setWishlistedIds((prev) => new Set(prev).add(destinationId));
-        toast.error('Failed to remove from wishlist');
-      } else {
-        toast.success('Removed from wishlist');
-      }
-    } else {
-      const { error } = await supabase
-        .from('wishlists')
-        .insert({ user_id: userId, destination_id: destinationId });
-
-      if (error) {
-        // Revert
-        setWishlistedIds((prev) => {
-          const next = new Set(prev);
+      // Optimistic update
+      setWishlistedIds((prev) => {
+        const next = new Set(prev);
+        if (isWishlisted) {
           next.delete(destinationId);
-          return next;
-        });
-        toast.error('Failed to add to wishlist');
+        } else {
+          next.add(destinationId);
+        }
+        return next;
+      });
+
+      if (isWishlisted) {
+        const { error } = await supabase
+          .from('wishlists')
+          .delete()
+          .eq('user_id', userId)
+          .eq('destination_id', destinationId);
+
+        if (error) {
+          setWishlistedIds((prev) => new Set(prev).add(destinationId));
+          toast.error('Failed to remove from wishlist');
+        } else {
+          toast.success('Removed from wishlist');
+        }
       } else {
-        toast.success('Added to wishlist ❤️');
+        const { error } = await supabase
+          .from('wishlists')
+          .insert({ user_id: userId, destination_id: destinationId });
+
+        if (error) {
+          setWishlistedIds((prev) => {
+            const next = new Set(prev);
+            next.delete(destinationId);
+            return next;
+          });
+          toast.error('Failed to add to wishlist');
+        } else {
+          toast.success('Added to wishlist ❤️');
+        }
       }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+      toast.error('An unexpected error occurred. Please try again.');
     }
   }, [userId, wishlistedIds]);
 
