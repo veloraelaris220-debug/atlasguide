@@ -51,9 +51,7 @@ export function AnimatedRoutes() {
           path="/chat"
           element={
             <PageTransition>
-              <ProtectedRoute>
-                <Chat />
-              </ProtectedRoute>
+              <Chat />
             </PageTransition>
           }
         />

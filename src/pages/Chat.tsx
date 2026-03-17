@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Send, Loader2, Sparkles, Trash2, Clock, Plus, MessageCircle, LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Send, Loader as Loader2, Sparkles, Trash2, Clock, Plus, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
 import ReactMarkdown from 'react-markdown';
 
 type Message = {
@@ -61,7 +60,6 @@ const Chat = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
 
   // Persist sessions whenever they change
   useEffect(() => {
@@ -114,11 +112,6 @@ const Chat = () => {
     if (activeId === id) startNewChat();
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/auth');
-  };
-
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -131,17 +124,11 @@ const Chat = () => {
     let assistantContent = '';
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate('/auth');
-        return;
-      }
-
       const response = await fetch(CHAT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ messages: nextMessages }),
       });
@@ -285,17 +272,13 @@ const Chat = () => {
                 <p className="text-xs text-muted-foreground">AI-powered travel assistant</p>
               </div>
             </div>
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto">
               <Link to="/explore">
                 <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
                   <ArrowLeft className="w-4 h-4" />
                   Back to Explore
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 text-muted-foreground">
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
             </div>
           </div>
 
