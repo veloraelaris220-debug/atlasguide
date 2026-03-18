@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
+import { X, Send, Loader as Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { AIBotAnimation } from '@/components/AIBotAnimation';
+import ReactMarkdown from 'react-markdown';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -130,23 +132,37 @@ export const TravelGuideChat = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 left-6 z-50 flex items-center gap-3 bg-gradient-to-r from-primary to-ocean text-primary-foreground px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow group"
+            className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-shadow group"
           >
             <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
+              className="w-full h-full rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center relative overflow-hidden"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <Sparkles className="w-5 h-5" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-blue-300 via-blue-500 to-blue-700 opacity-90"
+              />
+              <div className="absolute inset-0 flex items-center justify-center gap-2 z-10">
+                <motion.div
+                  className="w-3 h-3 bg-white rounded-full"
+                  animate={{ scaleY: [1, 0, 1] }}
+                  transition={{ duration: 0.3, times: [0, 0.5, 1], repeat: Infinity, repeatDelay: 3 }}
+                />
+                <motion.div
+                  className="w-3 h-3 bg-white rounded-full"
+                  animate={{ scaleY: [1, 0, 1] }}
+                  transition={{ duration: 0.3, times: [0, 0.5, 1], repeat: Infinity, repeatDelay: 3 }}
+                />
+              </div>
+              <motion.div
+                className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full opacity-40"
+                animate={{ opacity: [0.2, 0.6, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
             </motion.div>
-            <span className="font-medium text-sm">Travel Guide</span>
-            <motion.div
-              className="absolute -top-1 -right-1 w-3 h-3 bg-sunset rounded-full"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            />
           </motion.button>
         )}
       </AnimatePresence>
@@ -159,24 +175,43 @@ export const TravelGuideChat = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 left-6 z-50 w-[380px] h-[500px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-8 right-8 z-50 w-[420px] h-[600px] bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-700"
           >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-primary to-ocean p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-white" />
+            {/* Header with Bot Animation */}
+            <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 p-6 flex flex-col items-center justify-center relative">
+              <motion.div
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                className="mb-4"
+              >
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-300 to-blue-500 rounded-3xl flex items-center justify-center relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-300 via-blue-500 to-blue-700 rounded-3xl opacity-90" />
+                  <div className="absolute inset-0 flex items-center justify-center gap-3 z-10">
+                    <motion.div
+                      className="w-3 h-3 bg-white rounded-full"
+                      animate={{ scaleY: [1, 0, 1] }}
+                      transition={{ duration: 0.3, times: [0, 0.5, 1], repeat: Infinity, repeatDelay: 3 }}
+                    />
+                    <motion.div
+                      className="w-3 h-3 bg-white rounded-full"
+                      animate={{ scaleY: [1, 0, 1] }}
+                      transition={{ duration: 0.3, times: [0, 0.5, 1], repeat: Infinity, repeatDelay: 3 }}
+                    />
+                  </div>
+                  <motion.div
+                    className="absolute top-2 left-2 w-4 h-4 bg-white rounded-full opacity-40"
+                    animate={{ opacity: [0.2, 0.6, 0.2] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-white">Travel Guide</h3>
-                  <p className="text-xs text-white/80">AI-powered travel assistant</p>
-                </div>
-              </div>
+              </motion.div>
+              <h3 className="font-semibold text-white text-lg">Travel Guide</h3>
+              <p className="text-xs text-blue-100">AI-powered travel assistant</p>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/20"
+                className="absolute top-4 right-4 text-white hover:bg-white/20"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -185,21 +220,28 @@ export const TravelGuideChat = () => {
             {/* Messages */}
             <ScrollArea ref={scrollRef} className="flex-1 p-4">
               <div className="space-y-4">
-                {messages.map((message, index) => (
+                {messages.slice(1).map((message, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    transition={{ delay: index * 0.05 }}
+                    className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${
+                      className={`max-w-xs px-4 py-3 rounded-3xl text-sm leading-relaxed shadow-sm ${
                         message.role === 'user'
-                          ? 'bg-primary text-primary-foreground rounded-br-md'
-                          : 'bg-muted text-foreground rounded-bl-md'
+                          ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-br-none'
+                          : 'bg-white dark:bg-slate-700 text-foreground rounded-bl-none border border-slate-200 dark:border-slate-600'
                       }`}
                     >
-                      {message.content}
+                      {message.role === 'assistant' ? (
+                        <div className="prose prose-sm dark:prose-invert max-w-none">
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                      ) : (
+                        message.content
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -209,8 +251,8 @@ export const TravelGuideChat = () => {
                     animate={{ opacity: 1 }}
                     className="flex justify-start"
                   >
-                    <div className="bg-muted px-4 py-2.5 rounded-2xl rounded-bl-md">
-                      <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                    <div className="bg-white dark:bg-slate-700 px-4 py-3 rounded-3xl rounded-bl-none border border-slate-200 dark:border-slate-600">
+                      <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
                     </div>
                   </motion.div>
                 )}
@@ -218,22 +260,31 @@ export const TravelGuideChat = () => {
             </ScrollArea>
 
             {/* Input */}
-            <div className="p-4 border-t border-border">
+            <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
               <div className="flex gap-2">
-                <Input
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Ask about destinations..."
-                  className="flex-1 rounded-full"
-                  disabled={isLoading}
-                />
+                <div className="flex-1 relative">
+                  <Input
+                    ref={inputRef}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="How can I help?"
+                    className="flex-1 rounded-full px-4 py-2.5 border-2 border-blue-200 dark:border-blue-900 focus:border-blue-500 dark:focus:border-blue-500 bg-white dark:bg-slate-700 transition-all"
+                    disabled={isLoading}
+                  />
+                  <motion.div
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400"
+                    animate={{ scale: [1, 1.15, 1], rotate: [0, 10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </motion.div>
+                </div>
                 <Button
                   onClick={sendMessage}
                   disabled={!input.trim() || isLoading}
                   size="icon"
-                  className="rounded-full shrink-0"
+                  className="rounded-full w-10 h-10 shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
