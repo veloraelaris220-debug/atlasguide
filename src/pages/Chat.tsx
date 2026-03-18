@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { AIBotAnimation } from '@/components/AIBotAnimation';
 import ReactMarkdown from 'react-markdown';
 
 type Message = {
@@ -254,9 +255,9 @@ const Chat = () => {
         </AnimatePresence>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
           {/* Chat Header */}
-          <div className="border-b border-border px-6 py-3 flex items-center gap-4 bg-card/50 backdrop-blur-sm">
+          <div className="border-b border-border px-6 py-3 flex items-center gap-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
             <button
               onClick={() => setSidebarOpen((p) => !p)}
               className="p-2 rounded-lg hover:bg-muted transition-colors"
@@ -283,25 +284,37 @@ const Chat = () => {
           </div>
 
           {/* Messages */}
-          <ScrollArea ref={scrollRef} className="flex-1 px-4 md:px-8 py-6">
-            <div className="max-w-3xl mx-auto space-y-6">
-              {messages.map((message, index) => (
+          <ScrollArea ref={scrollRef} className="flex-1 px-4 md:px-8 py-8">
+            <div className="max-w-2xl mx-auto space-y-6">
+              {messages.length === 1 && (
+                <div className="flex flex-col items-center justify-center py-12 space-y-6">
+                  <AIBotAnimation />
+                  <div className="text-center space-y-3">
+                    <h3 className="text-2xl font-bold text-foreground">Welcome to Your Travel Guide</h3>
+                    <p className="text-muted-foreground max-w-md">
+                      Ask me anything about destinations, travel tips, itineraries, and more. I'm here to help plan your perfect journey!
+                    </p>
+                  </div>
+                </div>
+              )}
+              {messages.slice(1).map((message, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  transition={{ delay: index * 0.05 }}
+                  className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {message.role === 'assistant' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-ocean flex items-center justify-center mr-3 mt-1 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-ocean flex items-center justify-center shrink-0">
                       <Sparkles className="w-3.5 h-3.5 text-primary-foreground" />
                     </div>
                   )}
                   <div
-                    className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                    className={`max-w-xs md:max-w-lg px-4 py-3 rounded-3xl text-sm leading-relaxed shadow-sm ${
                       message.role === 'user'
-                        ? 'bg-primary text-primary-foreground rounded-br-md'
-                        : 'bg-muted text-foreground rounded-bl-md'
+                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-br-none'
+                        : 'bg-white dark:bg-slate-800 text-foreground rounded-bl-none border border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     {message.role === 'assistant' ? (
@@ -315,11 +328,11 @@ const Chat = () => {
                 </motion.div>
               ))}
               {isLoading && messages[messages.length - 1]?.role === 'user' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-ocean flex items-center justify-center mr-3 shrink-0">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-ocean flex items-center justify-center shrink-0">
                     <Sparkles className="w-3.5 h-3.5 text-primary-foreground" />
                   </div>
-                  <div className="bg-muted px-4 py-3 rounded-2xl rounded-bl-md">
+                  <div className="bg-white dark:bg-slate-800 px-4 py-3 rounded-3xl rounded-bl-none border border-slate-200 dark:border-slate-700">
                     <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
                   </div>
                 </motion.div>
@@ -328,22 +341,31 @@ const Chat = () => {
           </ScrollArea>
 
           {/* Input */}
-          <div className="border-t border-border p-4 bg-card/50 backdrop-blur-sm">
-            <div className="max-w-3xl mx-auto flex gap-3">
-              <Input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask about destinations, travel tips, itineraries..."
-                className="flex-1 rounded-full px-5 py-3 h-12"
-                disabled={isLoading}
-              />
+          <div className="border-t border-slate-200 dark:border-slate-700 p-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
+            <div className="max-w-2xl mx-auto flex gap-3">
+              <div className="flex-1 relative">
+                <Input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="How can I help you today?"
+                  className="flex-1 rounded-full px-5 py-3 h-12 border-2 border-blue-200 dark:border-blue-900 focus:border-blue-500 dark:focus:border-blue-500 bg-white dark:bg-slate-800 transition-all"
+                  disabled={isLoading}
+                />
+                <motion.div
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-400"
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Sparkles className="w-5 h-5" />
+                </motion.div>
+              </div>
               <Button
                 onClick={sendMessage}
                 disabled={!input.trim() || isLoading}
                 size="icon"
-                className="rounded-full w-12 h-12 shrink-0"
+                className="rounded-full w-12 h-12 shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
               >
                 <Send className="w-5 h-5" />
               </Button>
